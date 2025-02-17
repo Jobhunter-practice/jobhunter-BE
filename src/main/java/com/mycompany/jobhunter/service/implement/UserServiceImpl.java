@@ -1,11 +1,10 @@
 package com.mycompany.jobhunter.service.implement;
 
-import com.mycompany.jobhunter.domain.dto.UserDTO;
+import com.mycompany.jobhunter.domain.dto.response.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.repository.UserRepository;
 import com.mycompany.jobhunter.service.UserService;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -15,15 +14,19 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    private UserDTO convertToUserDTO(User user) {
-        UserDTO userDTO = new UserDTO(
-                user.getName(),
-                user.getEmail(),
-                user.getAge(),
-                user.getGender(),
-                user.getAddress()
-        );
-        return userDTO;
+    private ResCreateUserDTO convertToResCreateUserDTO(User user) {
+        ResCreateUserDTO res = new ResCreateUserDTO();
+        ResCreateUserDTO.CompanyUser com = new ResCreateUserDTO.CompanyUser();
+
+        res.setId(user.getId());
+        res.setEmail(user.getEmail());
+        res.setName(user.getName());
+        res.setAge(user.getAge());
+        res.setCreatedAt(user.getCreatedAt());
+        res.setGender(user.getGender());
+        res.setAddress(user.getAddress());
+
+        return res;
     }
 
     @Override
@@ -32,8 +35,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO createUser(User user) {
-        UserDTO userDTO = convertToUserDTO(this.userRepository.save(user));
+    public ResCreateUserDTO createUser(User user) {
+        ResCreateUserDTO userDTO = convertToResCreateUserDTO(this.userRepository.save(user));
         return userDTO;
+    }
+
+    @Override
+    public User handleGetUserByUsername(String email) {
+        return userRepository.findByEmail(email);
     }
 }
