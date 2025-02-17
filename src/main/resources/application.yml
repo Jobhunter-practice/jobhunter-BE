@@ -1,3 +1,14 @@
 spring:
   application:
     name:jobhunter-BE
+
+#  database configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/jobhunter
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
