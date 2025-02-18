@@ -58,7 +58,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Void updateRefreshToken(String email, String refreshToken) {
+    public Void updateRefreshToken(String refreshToken, String email) {
         User user = userRepository.findByEmail(email);
         user.setRefreshToken(refreshToken);
         userRepository.save(user);

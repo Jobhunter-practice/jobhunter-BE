@@ -47,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<ResLoginDTO> login(@RequestBody ReqLoginDTO user) {
+    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO user) {
         // Inject username and password
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), // In this case, I use "email" prop at "loadUserByUsername"
                 user.getPassword());
@@ -84,7 +84,7 @@ public class AuthController {
         );
         result.setAccessToken(refreshToken);
         // update user's refresh token
-        this.userService.updateRefreshToken(currentUserDB.getEmail(), refreshToken);
+        this.userService.updateRefreshToken(refreshToken, currentUserDB.getEmail());
 
         // set cookies
         ResponseCookie resCookies = ResponseCookie
@@ -94,7 +94,10 @@ public class AuthController {
                 .path("/").maxAge(refreshTokenExpiration)
                 .build();
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, resCookies.toString()).body(result);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.SET_COOKIE, resCookies.toString())
+                .body(result);
     }
 
     @GetMapping("auth/account")
