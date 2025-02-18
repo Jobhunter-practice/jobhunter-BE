@@ -3,7 +3,7 @@ package com.mycompany.jobhunter.controller;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.Skill;
 import com.mycompany.jobhunter.service.contract.ISkillService;
-import com.mycompany.jobhunter.utils.errors.IdInvalidException;
+import com.mycompany.jobhunter.util.error.IdInvalidException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;

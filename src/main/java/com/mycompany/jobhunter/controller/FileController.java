@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.mycompany.jobhunter.domain.dto.response.file.ResUploadFileDTO;
 import com.mycompany.jobhunter.service.contract.IFileService;
-import com.mycompany.jobhunter.utils.errors.StorageException;
+import com.mycompany.jobhunter.util.error.StorageException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;

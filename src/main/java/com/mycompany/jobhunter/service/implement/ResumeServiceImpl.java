@@ -25,7 +25,7 @@ import com.mycompany.jobhunter.domain.dto.response.resume.ResUpdateResumeDTO;
 import com.mycompany.jobhunter.repository.JobRepository;
 import com.mycompany.jobhunter.repository.ResumeRepository;
 import com.mycompany.jobhunter.repository.UserRepository;
-import com.mycompany.jobhunter.utils.SecurityUtil;
+import com.mycompany.jobhunter.util.SecurityUtil;
 
 @Service
 public class ResumeServiceImpl implements com.mycompany.jobhunter.service.contract.IResumeService {

@@ -1,4 +1,4 @@
-package com.mycompany.jobhunter.utils.errors;
+package com.mycompany.jobhunter.util.error;
 
 import com.mycompany.jobhunter.domain.dto.response.RestResponse;
 import org.springframework.http.HttpStatus;

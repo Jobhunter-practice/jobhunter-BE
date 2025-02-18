@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.mycompany.jobhunter.utils.errors.IdInvalidException;
+import com.mycompany.jobhunter.util.error.IdInvalidException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ import com.mycompany.jobhunter.domain.dto.response.resume.ResFetchResumeDTO;
 import com.mycompany.jobhunter.domain.dto.response.resume.ResUpdateResumeDTO;
 import com.mycompany.jobhunter.service.contract.IResumeService;
 import com.mycompany.jobhunter.service.contract.IUserService;
-import com.mycompany.jobhunter.utils.SecurityUtil;
+import com.mycompany.jobhunter.util.SecurityUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 

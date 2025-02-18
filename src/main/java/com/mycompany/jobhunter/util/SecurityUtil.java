@@ -1,4 +1,4 @@
-package com.mycompany.jobhunter.utils;
+package com.mycompany.jobhunter.util;
 
 import com.mycompany.jobhunter.domain.dto.response.ResLoginDTO;
 
@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.jose.jws.JwsAlgorithms;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;

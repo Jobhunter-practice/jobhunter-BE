@@ -6,9 +6,9 @@ import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.service.contract.IUserService;
-import com.mycompany.jobhunter.utils.SecurityUtil;
-import com.mycompany.jobhunter.utils.errors.IdInvalidException;
-import com.mycompany.jobhunter.utils.errors.InvalidRequestBodyException;
+import com.mycompany.jobhunter.util.SecurityUtil;
+import com.mycompany.jobhunter.util.error.IdInvalidException;
+import com.mycompany.jobhunter.util.error.InvalidRequestBodyException;
 
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;

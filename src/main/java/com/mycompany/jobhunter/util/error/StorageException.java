@@ -1,4 +1,4 @@
-package com.mycompany.jobhunter.utils.errors;
+package com.mycompany.jobhunter.util.error;
 
 public class StorageException extends Exception {
     public StorageException(String message) {

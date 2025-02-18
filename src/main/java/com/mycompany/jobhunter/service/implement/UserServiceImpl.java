@@ -7,7 +7,7 @@ import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.repository.UserRepository;
 import com.mycompany.jobhunter.service.contract.IUserService;
-import com.mycompany.jobhunter.utils.SecurityUtil;
+import com.mycompany.jobhunter.util.SecurityUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
