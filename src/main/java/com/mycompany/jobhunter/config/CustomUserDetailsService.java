@@ -1,4 +1,4 @@
-package com.mycompany.jobhunter.service;
+package com.mycompany.jobhunter.config;
 
 import com.mycompany.jobhunter.service.contract.IUserService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
