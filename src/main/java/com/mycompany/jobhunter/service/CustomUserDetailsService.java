@@ -1,5 +1,6 @@
 package com.mycompany.jobhunter.service;
 
+import com.mycompany.jobhunter.service.contract.IUserService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

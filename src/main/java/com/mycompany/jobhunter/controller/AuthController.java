@@ -4,7 +4,7 @@ import com.mycompany.jobhunter.domain.dto.request.ReqLoginDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResLoginDTO;
 import com.mycompany.jobhunter.domain.entity.User;
-import com.mycompany.jobhunter.service.IUserService;
+import com.mycompany.jobhunter.service.contract.IUserService;
 import com.mycompany.jobhunter.utils.SecurityUtil;
 import com.mycompany.jobhunter.utils.errors.DuplicatedKeyException;
 import com.mycompany.jobhunter.utils.errors.MissingCookiesException;

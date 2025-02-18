@@ -1,4 +1,4 @@
-package com.mycompany.jobhunter.service;
+package com.mycompany.jobhunter.service.contract;
 
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.Company;

@@ -49,4 +49,7 @@ public class User {
 
     //resumes;
     //role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 }

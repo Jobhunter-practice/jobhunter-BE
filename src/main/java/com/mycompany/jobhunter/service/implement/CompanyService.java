@@ -5,7 +5,7 @@ import com.mycompany.jobhunter.domain.entity.Company;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.repository.CompanyRepository;
 import com.mycompany.jobhunter.repository.UserRepository;
-import com.mycompany.jobhunter.service.ICompanyService;
+import com.mycompany.jobhunter.service.contract.ICompanyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -67,14 +67,7 @@ public class CompanyService implements ICompanyService {
     @Override
     public Void handleDeleteCompany(long id) {
         Optional<Company> comOptional = this.companyRepository.findById(id);
-        if (comOptional.isPresent()) {
-            Company com = comOptional.get();
-            // fetch all user belong to this company
-            List<User> users = this.userRepository.findByCompany(com);
-            this.userRepository.deleteAll(users);
-        }
         this.companyRepository.deleteById(id);
-
         return null;
     }
 

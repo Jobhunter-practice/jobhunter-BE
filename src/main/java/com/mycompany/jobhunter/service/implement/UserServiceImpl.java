@@ -6,7 +6,7 @@ import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.repository.UserRepository;
-import com.mycompany.jobhunter.service.IUserService;
+import com.mycompany.jobhunter.service.contract.IUserService;
 import com.mycompany.jobhunter.utils.SecurityUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

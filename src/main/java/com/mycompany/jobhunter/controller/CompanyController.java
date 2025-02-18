@@ -2,7 +2,7 @@ package com.mycompany.jobhunter.controller;
 
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.Company;
-import com.mycompany.jobhunter.service.ICompanyService;
+import com.mycompany.jobhunter.service.contract.ICompanyService;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;

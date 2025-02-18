@@ -4,7 +4,7 @@ import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.dto.response.job.ResCreateJobDTO;
 import com.mycompany.jobhunter.domain.dto.response.job.ResUpdateJobDTO;
 import com.mycompany.jobhunter.domain.entity.Job;
-import com.mycompany.jobhunter.service.IJobService;
+import com.mycompany.jobhunter.service.contract.IJobService;
 import com.mycompany.jobhunter.utils.errors.IdInvalidException;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;

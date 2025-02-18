@@ -1,4 +1,4 @@
-package com.mycompany.jobhunter.service;
+package com.mycompany.jobhunter.service.contract;
 
 import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResUpdateUserDTO;

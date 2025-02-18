@@ -7,7 +7,7 @@ import com.mycompany.jobhunter.domain.entity.Company;
 import com.mycompany.jobhunter.domain.entity.Job;
 import com.mycompany.jobhunter.repository.CompanyRepository;
 import com.mycompany.jobhunter.repository.JobRepository;
-import com.mycompany.jobhunter.service.IJobService;
+import com.mycompany.jobhunter.service.contract.IJobService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

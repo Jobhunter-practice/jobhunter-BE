@@ -5,7 +5,7 @@ import com.mycompany.jobhunter.domain.dto.response.user.ResUpdateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
-import com.mycompany.jobhunter.service.IUserService;
+import com.mycompany.jobhunter.service.contract.IUserService;
 import com.mycompany.jobhunter.utils.SecurityUtil;
 import com.mycompany.jobhunter.utils.errors.IdInvalidException;
 import com.mycompany.jobhunter.utils.errors.InvalidRequestBodyException;
