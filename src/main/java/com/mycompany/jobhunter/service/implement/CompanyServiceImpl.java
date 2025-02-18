@@ -2,7 +2,6 @@ package com.mycompany.jobhunter.service.implement;
 
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.Company;
-import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.repository.CompanyRepository;
 import com.mycompany.jobhunter.repository.UserRepository;
 import com.mycompany.jobhunter.service.contract.ICompanyService;
@@ -11,16 +10,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CompanyService implements ICompanyService {
+public class CompanyServiceImpl implements ICompanyService {
 
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
 
-    public CompanyService(
+    public CompanyServiceImpl(
             CompanyRepository companyRepository,
             UserRepository userRepository
     ) {
