@@ -1,11 +1,11 @@
 package com.mycompany.jobhunter.controller;
 
-import com.mycompany.jobhunter.domain.dto.response.ResCreateUserDTO;
-import com.mycompany.jobhunter.domain.dto.response.ResUpdateUserDTO;
-import com.mycompany.jobhunter.domain.dto.response.ResUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.user.ResUpdateUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
-import com.mycompany.jobhunter.service.UserService;
+import com.mycompany.jobhunter.service.IUserService;
 import com.mycompany.jobhunter.utils.SecurityUtil;
 import com.mycompany.jobhunter.utils.errors.IdInvalidException;
 import com.mycompany.jobhunter.utils.errors.InvalidRequestBodyException;
@@ -26,12 +26,12 @@ import java.util.Optional;
 @RequestMapping("/api/v1")
 public class UserController {
 
-    private final UserService userService;
+    private final IUserService userService;
     private final SecurityUtil securityUtil;
     private final PasswordEncoder passwordEncoder;
 
     public UserController(
-            UserService userService,
+            IUserService userService,
             PasswordEncoder passwordEncoder,
             SecurityUtil securityUtil
     ) {

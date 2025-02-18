@@ -1,10 +1,10 @@
 package com.mycompany.jobhunter.controller;
 
 import com.mycompany.jobhunter.domain.dto.request.ReqLoginDTO;
-import com.mycompany.jobhunter.domain.dto.response.ResCreateUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResLoginDTO;
 import com.mycompany.jobhunter.domain.entity.User;
-import com.mycompany.jobhunter.service.UserService;
+import com.mycompany.jobhunter.service.IUserService;
 import com.mycompany.jobhunter.utils.SecurityUtil;
 import com.mycompany.jobhunter.utils.errors.DuplicatedKeyException;
 import com.mycompany.jobhunter.utils.errors.MissingCookiesException;
@@ -29,7 +29,7 @@ import java.time.Instant;
 @RequestMapping("/api/v1")
 public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final UserService userService;
+    private final IUserService userService;
     private final SecurityUtil securityUtil;
     private final PasswordEncoder passwordEncoder;
 
@@ -38,7 +38,7 @@ public class AuthController {
 
     public AuthController(
             AuthenticationManagerBuilder authenticationManagerBuilder,
-            UserService userService, SecurityUtil securityUtil,
+            IUserService userService, SecurityUtil securityUtil,
             PasswordEncoder passwordEncoder) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userService = userService;

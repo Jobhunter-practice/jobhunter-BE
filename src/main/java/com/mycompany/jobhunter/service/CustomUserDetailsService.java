@@ -12,9 +12,9 @@ import java.util.Collections;
 // override UserDetailsService by naming this component "userDetailsService"
 @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserService customUserDetailsService;
+    private final IUserService customUserDetailsService;
 
-    public CustomUserDetailsService(UserService userService) {
+    public CustomUserDetailsService(IUserService userService) {
         this.customUserDetailsService = userService;
     }
 

@@ -1,25 +1,26 @@
-package com.mycompany.jobhunter.domain.dto.response;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package com.mycompany.jobhunter.domain.dto.response.user;
 
 import com.mycompany.jobhunter.domain.entity.enumeration.GenderEnum;
 
-import lombok.Data;
+import lombok.Setter;
+import lombok.Getter;
 
 import java.time.Instant;
 
-@Data
-public class ResCreateUserDTO {
+@Getter
+@Setter
+public class ResUpdateUserDTO {
     private long id;
     private String name;
-    private String email;
     private GenderEnum gender;
     private String address;
     private int age;
-    private Instant createdAt;
+    private Instant updatedAt;
+
     private CompanyUser company;
 
-    @Data
+    @Getter
+    @Setter
     public static class CompanyUser {
         private long id;
         private String name;

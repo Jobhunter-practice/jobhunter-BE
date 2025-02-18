@@ -1,14 +1,14 @@
 package com.mycompany.jobhunter.service;
 
-import com.mycompany.jobhunter.domain.dto.response.ResCreateUserDTO;
-import com.mycompany.jobhunter.domain.dto.response.ResUpdateUserDTO;
-import com.mycompany.jobhunter.domain.dto.response.ResUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.user.ResUpdateUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-public interface UserService {
+public interface IUserService {
     public Boolean isEmailExisted(String email);
 
     public ResCreateUserDTO createUser(User user);
