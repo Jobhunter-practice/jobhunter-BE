@@ -18,7 +18,7 @@ import java.time.Instant;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     private String name;
 
@@ -28,7 +28,7 @@ public class User {
     @NotBlank(message = "Password is required")
     private String  password;
 
-    private Integer age;
+    private int age;
 
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;

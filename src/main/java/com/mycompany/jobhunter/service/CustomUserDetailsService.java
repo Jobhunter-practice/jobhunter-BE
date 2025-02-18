@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.mycompany.jobhunter.domain.entity.User user = this.customUserDetailsService.handleGetUserByUsername(username);
+        com.mycompany.jobhunter.domain.entity.User user = this.customUserDetailsService.handleGetUserByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("Username/password is incorrect");
         }
