@@ -4,15 +4,17 @@ import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.Company;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
 public interface ICompanyService {
+    Company handleCreateCompany(Company c);
 
-    public Company handleCreateCompany(Company company);
-    public ResultPaginationDTO handleGetCompany(Specification<Company> spec, Pageable pageable);
-    public Company handleUpdateCompany(Company company);
-    public Void handleDeleteCompany(long id);
-    public Optional<Company> findById(long id);
+    ResultPaginationDTO handleGetCompany(Specification<Company> spec, Pageable pageable);
+
+    Company handleUpdateCompany(Company c);
+
+    Void handleDeleteCompany(long id);
+
+    Optional<Company> findById(long id);
 }

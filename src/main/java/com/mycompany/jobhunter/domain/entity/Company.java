@@ -33,4 +33,7 @@ public class Company {
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private List<User> users;
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    private List<Job> jobs;
 }

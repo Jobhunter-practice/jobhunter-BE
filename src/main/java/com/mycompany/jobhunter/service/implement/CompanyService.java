@@ -28,10 +28,12 @@ public class CompanyService implements ICompanyService {
         this.userRepository = userRepository;
     }
 
+    @Override
     public Company handleCreateCompany(Company c) {
         return this.companyRepository.save(c);
     }
 
+    @Override
     public ResultPaginationDTO handleGetCompany(Specification<Company> spec, Pageable pageable) {
         Page<Company> pageCompany = this.companyRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
