@@ -43,7 +43,10 @@ public class User {
     private String createdBy;
     private String updatedBy;
 
-    //company;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     //resumes;
     //role;
 }
