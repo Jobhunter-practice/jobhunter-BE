@@ -1,6 +1,7 @@
 package com.mycompany.jobhunter.service;
 
 import com.mycompany.jobhunter.domain.dto.response.ResCreateUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.ResUpdateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
@@ -24,6 +25,10 @@ public interface UserService {
 
     public ResUserDTO convertToResUserDTO(User user);
 
+    public ResUpdateUserDTO convertToResUpdateUserDTO(User user);
+
     public ResultPaginationDTO fetchAllUsers(Specification<User> spec, Pageable pageable);
+
+    public User handleUpdateUser(User user);
 
 }

@@ -1,25 +1,30 @@
 package com.mycompany.jobhunter.service.implement;
 
 import com.mycompany.jobhunter.domain.dto.response.ResCreateUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.ResUpdateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.repository.UserRepository;
 import com.mycompany.jobhunter.service.UserService;
+import com.mycompany.jobhunter.utils.SecurityUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
+    private final SecurityUtil securityUtil;
+    public UserServiceImpl(UserRepository userRepository, SecurityUtil securityUtil) {
         this.userRepository = userRepository;
+        this.securityUtil = securityUtil;
     }
 
     private ResCreateUserDTO convertToResCreateUserDTO(User user) {
@@ -91,6 +96,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResUpdateUserDTO convertToResUpdateUserDTO(User user) {
+        ResUpdateUserDTO res = new ResUpdateUserDTO();
+
+        res.setId(user.getId());
+        res.setName(user.getName());
+        res.setAge(user.getAge());
+        res.setUpdatedAt(user.getUpdatedAt());
+        res.setGender(user.getGender());
+        res.setAddress(user.getAddress());
+        return res;
+    }
+
+    @Override
     public ResultPaginationDTO fetchAllUsers(Specification<User> spec, Pageable pageable) {
         Page<User> pageUser = this.userRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
@@ -112,5 +130,21 @@ public class UserServiceImpl implements UserService {
         rs.setResult(listUser);
 
         return rs;
+    }
+
+    @Override
+    public User handleUpdateUser(User reqUser) {
+        User currentUser = this.fetchUserById(reqUser.getId());
+        if (currentUser != null) {
+            currentUser.setAddress(reqUser.getAddress());
+            currentUser.setGender(reqUser.getGender());
+            currentUser.setAge(reqUser.getAge());
+            currentUser.setName(reqUser.getName());
+            currentUser.setUpdatedAt(Instant.now());
+
+            // update
+            currentUser = this.userRepository.save(currentUser);
+        }
+        return currentUser;
     }
 }

@@ -1,6 +1,7 @@
 package com.mycompany.jobhunter.controller;
 
 import com.mycompany.jobhunter.domain.dto.response.ResCreateUserDTO;
+import com.mycompany.jobhunter.domain.dto.response.ResUpdateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
@@ -19,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -87,7 +87,7 @@ public class UserController {
     public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") long id) throws IdInvalidException {
         User fetchUser = this.userService.fetchUserById(id);
         if (fetchUser == null) {
-            throw new IdInvalidException("User với id = " + id + " không tồn tại");
+            throw new IdInvalidException("User id = " + id + " not found");
         }
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -101,5 +101,14 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 this.userService.fetchAllUsers(spec, pageable));
+    }
+
+    @PutMapping("/users")
+    public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody User user) throws IdInvalidException {
+        User updatedUser = this.userService.handleUpdateUser(user);
+        if (updatedUser == null) {
+            throw new IdInvalidException("User id = " + user.getId() + " not found");
+        }
+        return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(updatedUser));
     }
 }
