@@ -7,6 +7,7 @@ import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.service.contract.IUserService;
 import com.mycompany.jobhunter.util.SecurityUtil;
+import com.mycompany.jobhunter.util.annotation.ApiMessage;
 import com.mycompany.jobhunter.util.error.IdInvalidException;
 import com.mycompany.jobhunter.util.error.InvalidRequestBodyException;
 
@@ -41,6 +42,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
+    @ApiMessage("Create new user")
     public ResponseEntity<ResCreateUserDTO> createUser(@Valid @RequestBody User user)
             throws InvalidRequestBodyException {
         // check if user's email has already existed ?
@@ -69,6 +71,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}")
+    @ApiMessage("Delete user")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) throws IdInvalidException {
         User currentUser = this.userService.fetchUserById(id);
         if (currentUser == null) {
@@ -84,6 +87,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
+    @ApiMessage("Fetch a user")
     public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") long id) throws IdInvalidException {
         User fetchUser = this.userService.fetchUserById(id);
         if (fetchUser == null) {
@@ -95,6 +99,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
+    @ApiMessage("Fetch all users")
     public ResponseEntity<ResultPaginationDTO> getAllUser(
             @Filter Specification<User> spec,
             Pageable pageable) {
@@ -104,6 +109,7 @@ public class UserController {
     }
 
     @PutMapping("/users")
+    @ApiMessage("Update user")
     public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody User user) throws IdInvalidException {
         User updatedUser = this.userService.handleUpdateUser(user);
         if (updatedUser == null) {

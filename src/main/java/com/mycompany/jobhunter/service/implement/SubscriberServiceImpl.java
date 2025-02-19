@@ -1,28 +1,28 @@
 package com.mycompany.jobhunter.service.implement;
 
+import com.mycompany.jobhunter.domain.dto.response.email.ResEmailJob;
+import com.mycompany.jobhunter.domain.entity.Job;
+import com.mycompany.jobhunter.domain.entity.Skill;
+import com.mycompany.jobhunter.domain.entity.Subscriber;
+import com.mycompany.jobhunter.repository.JobRepository;
+import com.mycompany.jobhunter.repository.SkillRepository;
+import com.mycompany.jobhunter.repository.SubscriberRepository;
+import com.mycompany.jobhunter.service.contract.ISubscriberService;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Service;
-
-import com.mycompany.jobhunter.domain.entity.Job;
-import com.mycompany.jobhunter.domain.entity.Skill;
-import com.mycompany.jobhunter.domain.entity.Subscriber;
-import com.mycompany.jobhunter.domain.dto.response.email.ResEmailJob;
-import com.mycompany.jobhunter.repository.JobRepository;
-import com.mycompany.jobhunter.repository.SkillRepository;
-import com.mycompany.jobhunter.repository.SubscriberRepository;
-
 @Service
-public class SubscriberService {
+public class SubscriberServiceImpl implements ISubscriberService {
 
     private final SubscriberRepository subscriberRepository;
     private final SkillRepository skillRepository;
     private final JobRepository jobRepository;
     private final EmailService emailService;
 
-    public SubscriberService(
+    public SubscriberServiceImpl(
             SubscriberRepository subscriberRepository,
             SkillRepository skillRepository,
             JobRepository jobRepository,
@@ -39,10 +39,12 @@ public class SubscriberService {
     // System.out.println(">>> TEST CRON");
     // }
 
+    @Override
     public boolean isExistsByEmail(String email) {
         return this.subscriberRepository.existsByEmail(email);
     }
 
+    @Override
     public Subscriber create(Subscriber subs) {
         // check skills
         if (subs.getSkills() != null) {
@@ -57,6 +59,7 @@ public class SubscriberService {
         return this.subscriberRepository.save(subs);
     }
 
+    @Override
     public Subscriber update(Subscriber subsDB, Subscriber subsRequest) {
         // check skills
         if (subsRequest.getSkills() != null) {
@@ -70,6 +73,7 @@ public class SubscriberService {
         return this.subscriberRepository.save(subsDB);
     }
 
+    @Override
     public Subscriber findById(long id) {
         Optional<Subscriber> subsOptional = this.subscriberRepository.findById(id);
         if (subsOptional.isPresent())
@@ -77,6 +81,7 @@ public class SubscriberService {
         return null;
     }
 
+    @Override
     public ResEmailJob convertJobToSendEmail(Job job) {
         ResEmailJob res = new ResEmailJob();
         res.setName(job.getName());
@@ -89,6 +94,7 @@ public class SubscriberService {
         return res;
     }
 
+    @Override
     public void sendSubscribersEmailJobs() {
         List<Subscriber> listSubs = this.subscriberRepository.findAll();
         if (listSubs != null && listSubs.size() > 0) {
@@ -113,6 +119,7 @@ public class SubscriberService {
         }
     }
 
+    @Override
     public Subscriber findByEmail(String email) {
         return this.subscriberRepository.findByEmail(email);
     }

@@ -1,14 +1,17 @@
 package com.mycompany.jobhunter.controller;
 
 import com.mycompany.jobhunter.domain.dto.request.ReqLoginDTO;
-import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResLoginDTO;
+import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.service.contract.IUserService;
 import com.mycompany.jobhunter.util.SecurityUtil;
+import com.mycompany.jobhunter.util.annotation.ApiMessage;
 import com.mycompany.jobhunter.util.error.DuplicatedKeyException;
 import com.mycompany.jobhunter.util.error.MissingCookiesException;
+
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,6 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
+    @ApiMessage("Login api")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO user) {
         // Inject username and password
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), // In this case, I use "email" prop at "loadUserByUsername"
@@ -63,7 +67,8 @@ public class AuthController {
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                 currentUserDB.getId(),
                 currentUserDB.getEmail(),
-                currentUserDB.getName()
+                currentUserDB.getName(),
+                currentUserDB.getRole()
         );
 
         result.setUser(userLogin);
@@ -101,6 +106,7 @@ public class AuthController {
     }
 
     @GetMapping("auth/account")
+    @ApiMessage("View account's detail")
     public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount() {
         String email = SecurityUtil.getCurrentUser().isPresent()
                 ? SecurityUtil.getCurrentUser().get()
@@ -113,7 +119,7 @@ public class AuthController {
             userLogin.setEmail(email);
             userLogin.setName(currentUserDB.getName());
             userLogin.setId(currentUserDB.getId());
-
+            userLogin.setRole(currentUserDB.getRole());
             result.setUser(userLogin);
         }
 
@@ -121,6 +127,7 @@ public class AuthController {
     }
 
     @GetMapping("/auth/refresh")
+    @ApiMessage("Refresh token")
     public ResponseEntity<ResLoginDTO> getRefreshToken(
             @CookieValue(name = "refresh_token", defaultValue = "refresh") String refreshToken
     ) throws MissingCookiesException {
@@ -143,7 +150,8 @@ public class AuthController {
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                 userDB.getId(),
                 userDB.getEmail(),
-                userDB.getName()
+                userDB.getName(),
+                userDB.getRole()
         );
         res.setUser(userLogin);
 
@@ -172,6 +180,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/logout")
+    @ApiMessage("Log out api")
     public ResponseEntity<Void> logout() throws BadCredentialsException {
         String email = SecurityUtil.getCurrentUser().isPresent()
                 ? SecurityUtil.getCurrentUser().get()
@@ -199,6 +208,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/register")
+    @ApiMessage("Register api")
     public ResponseEntity<ResCreateUserDTO> register(
             @Valid @RequestBody User postUser
     ) throws DuplicatedKeyException {

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.mycompany.jobhunter.util.annotation.ApiMessage;
 import com.mycompany.jobhunter.util.error.IdInvalidException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -55,6 +56,7 @@ public class ResumeController {
     }
 
     @PostMapping("/resumes")
+    @ApiMessage("Create resume")
     public ResponseEntity<ResCreateResumeDTO> create(@Valid @RequestBody Resume resume) throws IdInvalidException {
         // check id exists
         boolean isIdExist = this.resumeService.checkResumeExistByUserAndJob(resume);
@@ -67,6 +69,7 @@ public class ResumeController {
     }
 
     @PutMapping("/resumes")
+    @ApiMessage("Update resume")
     public ResponseEntity<ResUpdateResumeDTO> update(@RequestBody Resume resume) throws IdInvalidException {
         // check id exist
         Optional<Resume> reqResumeOptional = this.resumeService.fetchById(resume.getId());
@@ -81,6 +84,7 @@ public class ResumeController {
     }
 
     @DeleteMapping("/resumes/{id}")
+    @ApiMessage("Delete resume by id")
     public ResponseEntity<Void> delete(@PathVariable("id") long id) throws IdInvalidException {
         Optional<Resume> reqResumeOptional = this.resumeService.fetchById(id);
         if (reqResumeOptional.isEmpty()) {
@@ -92,6 +96,7 @@ public class ResumeController {
     }
 
     @GetMapping("/resumes/{id}")
+    @ApiMessage("Get a resume")
     public ResponseEntity<ResFetchResumeDTO> fetchById(@PathVariable("id") long id) throws IdInvalidException {
         Optional<Resume> reqResumeOptional = this.resumeService.fetchById(id);
         if (reqResumeOptional.isEmpty()) {
@@ -102,6 +107,7 @@ public class ResumeController {
     }
 
     @GetMapping("/resumes")
+    @ApiMessage("Get all resumes")
     public ResponseEntity<ResultPaginationDTO> fetchAll(
             @Filter Specification<Resume> spec,
             Pageable pageable
@@ -131,6 +137,7 @@ public class ResumeController {
     }
 
     @PostMapping("/resumes/by-user")
+    @ApiMessage("Get user's resume")
     public ResponseEntity<ResultPaginationDTO> fetchResumeByUser(Pageable pageable) {
 
         return ResponseEntity.ok().body(this.resumeService.fetchResumeByUser(pageable));

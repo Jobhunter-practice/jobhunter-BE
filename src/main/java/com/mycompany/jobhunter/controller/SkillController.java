@@ -3,6 +3,7 @@ package com.mycompany.jobhunter.controller;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.Skill;
 import com.mycompany.jobhunter.service.contract.ISkillService;
+import com.mycompany.jobhunter.util.annotation.ApiMessage;
 import com.mycompany.jobhunter.util.error.IdInvalidException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,6 +31,7 @@ public class SkillController {
     }
 
     @PostMapping("/skills")
+    @ApiMessage("Create skill")
     public ResponseEntity<Skill> create(@Valid @RequestBody Skill s) throws IdInvalidException {
         // check name
         if (s.getName() != null && this.skillService.isNameExist(s.getName())) {
@@ -39,6 +41,7 @@ public class SkillController {
     }
 
     @PutMapping("/skills")
+    @ApiMessage("Update skill")
     public ResponseEntity<Skill> update(@Valid @RequestBody Skill s) throws IdInvalidException {
         // check id
         Skill currentSkill = this.skillService.fetchSkillById(s.getId());
@@ -56,6 +59,7 @@ public class SkillController {
     }
 
     @DeleteMapping("/skills/{id}")
+    @ApiMessage("Delete skill")
     public ResponseEntity<Void> delete(@PathVariable("id") long id) throws IdInvalidException {
         // check id
         Skill currentSkill = this.skillService.fetchSkillById(id);
@@ -67,6 +71,7 @@ public class SkillController {
     }
 
     @GetMapping("/skills")
+    @ApiMessage("Get all skills")
     public ResponseEntity<ResultPaginationDTO> getAll(
             @Filter Specification<Skill> spec,
             Pageable pageable) {

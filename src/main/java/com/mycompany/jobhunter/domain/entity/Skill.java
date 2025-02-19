@@ -1,13 +1,8 @@
 package com.mycompany.jobhunter.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import com.mycompany.jobhunter.util.SecurityUtil;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,9 +28,28 @@ public class Skill {
     private String updatedBy;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "skills")
+    @JsonIgnore
     private List<Job> jobs;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "skills")
     @JsonIgnore
     private List<Subscriber> subscribers;
+
+    @PrePersist
+    public void handleBeforeCreate() {
+        this.createdBy = SecurityUtil.getCurrentUser().isPresent() == true
+                ? SecurityUtil.getCurrentUser().get()
+                : "";
+
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updatedBy = SecurityUtil.getCurrentUser().isPresent() == true
+                ? SecurityUtil.getCurrentUser().get()
+                : "";
+
+        this.updatedAt = Instant.now();
+    }
 }

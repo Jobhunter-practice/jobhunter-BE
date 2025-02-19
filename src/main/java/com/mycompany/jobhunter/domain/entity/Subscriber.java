@@ -1,20 +1,17 @@
 package com.mycompany.jobhunter.domain.entity;
 
-import java.time.Instant;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import com.mycompany.jobhunter.util.SecurityUtil;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "subscribers")
@@ -37,6 +34,7 @@ public class Subscriber {
             joinColumns = @JoinColumn(name = "subscriber_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
+    @JsonIgnoreProperties(value = { "subscribers" })
     private List<Skill> skills;
 
     private Instant createdAt;
@@ -44,4 +42,21 @@ public class Subscriber {
     private String createdBy;
     private String updatedBy;
 
+    @PrePersist
+    public void handleBeforeCreate() {
+        this.createdBy = SecurityUtil.getCurrentUser().isPresent() == true
+                ? SecurityUtil.getCurrentUser().get()
+                : "";
+
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updatedBy = SecurityUtil.getCurrentUser().isPresent() == true
+                ? SecurityUtil.getCurrentUser().get()
+                : "";
+
+        this.updatedAt = Instant.now();
+    }
 }

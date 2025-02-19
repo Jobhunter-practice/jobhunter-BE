@@ -1,24 +1,38 @@
 package com.mycompany.jobhunter.domain.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-
 import java.time.Instant;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mycompany.jobhunter.util.SecurityUtil;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity(name = "companies")
-@Data
+@Table(name = "companies")
+@Entity
+@Getter
+@Setter
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank(message = "Company's name is required")
+    @NotBlank(message = "name is required")
     private String name;
 
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
+
     private String address;
 
     private String logo;
@@ -31,9 +45,29 @@ public class Company {
 
     private String updatedBy;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<User> users;
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<User> users;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Job> jobs;
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<Job> jobs;
+
+    @PrePersist
+    public void handleBeforeCreate() {
+        this.createdBy = SecurityUtil.getCurrentUser().isPresent() == true
+                ? SecurityUtil.getCurrentUser().get()
+                : "";
+
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updatedBy = SecurityUtil.getCurrentUser().isPresent() == true
+                ? SecurityUtil.getCurrentUser().get()
+                : "";
+
+        this.updatedAt = Instant.now();
+    }
 }

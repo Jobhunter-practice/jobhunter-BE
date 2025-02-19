@@ -3,6 +3,7 @@ package com.mycompany.jobhunter.controller;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.Role;
 import com.mycompany.jobhunter.service.contract.IRoleService;
+import com.mycompany.jobhunter.util.annotation.ApiMessage;
 import com.mycompany.jobhunter.util.error.IdInvalidException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,6 +31,7 @@ public class RoleController {
     }
 
     @PostMapping("/roles")
+    @ApiMessage("Create role")
     public ResponseEntity<Role> create(@Valid @RequestBody Role r) throws IdInvalidException {
         // check name
         if (this.roleService.existByName(r.getName())) {
@@ -39,6 +41,7 @@ public class RoleController {
     }
 
     @PutMapping("/roles")
+    @ApiMessage("Update role")
     public ResponseEntity<Role> update(@Valid @RequestBody Role r) throws IdInvalidException {
         // check id
         if (this.roleService.fetchById(r.getId()) == null) {
@@ -55,6 +58,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/roles/{id}")
+    @ApiMessage("Delete role")
     public ResponseEntity<Void> delete(@PathVariable("id") long id) throws IdInvalidException {
         // check id
         if (this.roleService.fetchById(id) == null) {
@@ -65,6 +69,7 @@ public class RoleController {
     }
 
     @GetMapping("/roles")
+    @ApiMessage("Get all roles")
     public ResponseEntity<ResultPaginationDTO> getPermissions(
             @Filter Specification<Role> spec, Pageable pageable) {
 
@@ -72,6 +77,7 @@ public class RoleController {
     }
 
     @GetMapping("/roles/{id}")
+    @ApiMessage("Get a role")
     public ResponseEntity<Role> getById(@PathVariable("id") long id) throws IdInvalidException {
 
         Role role = this.roleService.fetchById(id);

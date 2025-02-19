@@ -2,6 +2,7 @@ spring:
   application:
     name:jobhunter-BE
 
+
 #  database configuration
   datasource:
     url: jdbc:mysql://localhost:3306/jobhunter
@@ -43,3 +44,6 @@ jobhunter:
 # File upload base path
   upload-file:
     base-uri: file:///S:/Java/JavaSP/job%20hunter/upload/
+
+server:
+  port: 8081
