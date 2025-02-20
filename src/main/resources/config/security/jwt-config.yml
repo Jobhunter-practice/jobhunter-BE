@@ -1,0 +1,8 @@
+# JWT Configuration
+jobhunter:
+  jwt:
+    base64-secret: TRrx3ZoD9xgevlM73MU8/ay9VO+8RJ7NjvFh5Ab0xoTsKzuPYwCOKDZugGYsVxroYRfP94DH6jBxBhFyBPaQQQ==
+    access-token-validity-in-seconds: 8640000  # 100 days
+    refresh-token-validity-in-seconds: 8640000  # 100 days
+
+

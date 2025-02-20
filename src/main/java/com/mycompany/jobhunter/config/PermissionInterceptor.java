@@ -3,6 +3,8 @@ package com.mycompany.jobhunter.config;
 import java.util.List;
 
 import com.mycompany.jobhunter.util.error.PermissionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -19,6 +21,8 @@ import com.mycompany.jobhunter.util.SecurityUtil;
 
 public class PermissionInterceptor implements HandlerInterceptor {
 
+    Logger log = LoggerFactory.getLogger(PermissionInterceptor.class);
+
     @Autowired
     IUserService userService;
 
@@ -26,16 +30,21 @@ public class PermissionInterceptor implements HandlerInterceptor {
     @Transactional
     public boolean preHandle(
             HttpServletRequest request,
-            HttpServletResponse response, Object handler)
-            throws Exception {
+            HttpServletResponse response, Object handler
+    ) throws Exception
+    {
 
         String path = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
         String requestURI = request.getRequestURI();
         String httpMethod = request.getMethod();
         System.out.println(">>> RUN preHandle");
+        log.info(">>> RUN preHandle");
         System.out.println(">>> path= " + path);
+        log.info(">>> path= {}", path);
         System.out.println(">>> httpMethod= " + httpMethod);
+        log.info(">>> httpMethod= {}", httpMethod);
         System.out.println(">>> requestURI= " + requestURI);
+        log.info(">>> requestURI= {}", requestURI);
 
         // check permission
         String email = SecurityUtil.getCurrentUser().isPresent() == true

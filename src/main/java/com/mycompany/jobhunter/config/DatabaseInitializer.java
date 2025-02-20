@@ -1,17 +1,15 @@
 package com.mycompany.jobhunter.config;
 
-import com.mycompany.jobhunter.domain.entity.Permission;
-import com.mycompany.jobhunter.domain.entity.Role;
-import com.mycompany.jobhunter.domain.entity.User;
+import com.mycompany.jobhunter.domain.entity.*;
 import com.mycompany.jobhunter.domain.entity.enumeration.GenderEnum;
-import com.mycompany.jobhunter.repository.PermissionRepository;
-import com.mycompany.jobhunter.repository.RoleRepository;
-import com.mycompany.jobhunter.repository.UserRepository;
+import com.mycompany.jobhunter.domain.entity.enumeration.LevelEnum;
+import com.mycompany.jobhunter.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -19,16 +17,31 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final PermissionRepository permissionRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final JobRepository jobRepository;
+    private final SkillRepository skillRepository;
+    private final CompanyRepository companyRepository;
+    private final SubscriberRepository subscriberRepository;
+    private final ResumeRepository resumeRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DatabaseInitializer(
             PermissionRepository permissionRepository,
             RoleRepository roleRepository,
             UserRepository userRepository,
+            JobRepository jobRepository,
+            SkillRepository skillRepository,
+            CompanyRepository companyRepository,
+            SubscriberRepository subscriberRepository,
+            ResumeRepository resumeRepository,
             PasswordEncoder passwordEncoder) {
         this.permissionRepository = permissionRepository;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.jobRepository = jobRepository;
+        this.skillRepository = skillRepository;
+        this.companyRepository = companyRepository;
+        this.resumeRepository = resumeRepository;
+        this.subscriberRepository = subscriberRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -38,6 +51,11 @@ public class DatabaseInitializer implements CommandLineRunner {
         long countPermissions = this.permissionRepository.count();
         long countRoles = this.roleRepository.count();
         long countUsers = this.userRepository.count();
+        long countCompanies = companyRepository.count();
+        long countSkills = skillRepository.count();
+        long countResumes = resumeRepository.count();
+        long countSubscribers = subscriberRepository.count();
+        long countJobs = jobRepository.count();
 
         if (countPermissions == 0) {
             ArrayList<Permission> arr = new ArrayList<>();
@@ -96,7 +114,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
             Role adminRole = new Role();
             adminRole.setName("SUPER_ADMIN");
-            adminRole.setDescription("Admin thì full permissions");
+            adminRole.setDescription("Admin has full permissions");
             adminRole.setActive(true);
             adminRole.setPermissions(allPermissions);
 
@@ -120,7 +138,99 @@ public class DatabaseInitializer implements CommandLineRunner {
             this.userRepository.save(adminUser);
         }
 
-        if (countPermissions > 0 && countRoles > 0 && countUsers > 0) {
+        Company c = new Company();
+        if(countCompanies == 0) {
+            c.setName("FPT");
+            c.setDescription("FPT software");
+
+            companyRepository.save(c);
+        }
+
+
+        Skill s1 = new Skill();
+        Skill s2 = new Skill();
+        Skill s3 = new Skill();
+        Skill s4 = new Skill();
+        if( countSkills == 0) {
+            s1.setName("Java spring boot");
+            s2.setName("NodeJs");
+            s3.setName("Django");
+            s4.setName("Lua");
+
+            skillRepository.save(s1);
+            skillRepository.save(s2);
+            skillRepository.save(s3);
+            skillRepository.save(s4);
+        }
+
+
+
+        Resume r1 = new Resume();
+        Resume r2 = new Resume();
+        if(countResumes == 0) {
+            r1.setEmail("cv1@gmail.com");
+            r1.setUrl("http://www.google.com");
+            r2.setEmail("cv2@gmail.com");
+            r2.setUrl("http://www.google.com");
+
+            resumeRepository.save(r1);
+            resumeRepository.save(r2);
+        }
+
+        Job j1 = new Job();
+        Job j2 = new Job();
+        if(countJobs == 0) {
+            j1.setName("Java Junior");
+            j1.setLocation("Ho Chi Minh");
+            j1.setSalary(3000);
+            j1.setQuantity(3);
+            j1.setLevel(LevelEnum.JUNIOR);
+            j1.setDescription("Java Junior with 3-yoe");
+            j1.setActive(true);
+            j1.setCompany(c);
+            j1.setSkills(Arrays.asList(s1));
+            j1.setResumes(Arrays.asList(r1, r2));
+
+            j2.setName("Nodejs Junior");
+            j2.setLocation("Ho Chi Minh");
+            j2.setSalary(3000);
+            j2.setQuantity(3);
+            j2.setLevel(LevelEnum.JUNIOR);
+            j2.setDescription("Nodejs Junior with 3-yoe");
+            j2.setActive(true);
+            j2.setCompany(c);
+            j2.setSkills(Arrays.asList(s2));
+            j2.setResumes(Arrays.asList(r1, r2));
+
+            jobRepository.save(j1);
+            jobRepository.save(j2);
+
+        }
+
+
+        Subscriber newSubscriber1 = new Subscriber();
+        Subscriber newSubscriber2 = new Subscriber();
+        if(countSubscribers == 0) {
+            newSubscriber1.setEmail("kio217a@gmail.com");
+            newSubscriber1.setName("Anh Khoa");
+            newSubscriber1.setSkills(Arrays.asList(s1, s2));
+
+            newSubscriber2.setEmail("pdanhkhoa21@gmail.com");
+            newSubscriber2.setName("Anh Khoaa");
+            newSubscriber2.setSkills(Arrays.asList(s2, s3, s4));
+
+            subscriberRepository.save(newSubscriber1);
+            subscriberRepository.save(newSubscriber2);
+        }
+
+        if (countPermissions > 0 &&
+                countRoles > 0 &&
+                countUsers > 0 &&
+                countCompanies > 0 &&
+                countSkills > 0 &&
+                countResumes > 0 &&
+                countJobs > 0
+        ) {
             System.out.println(">>> SKIP INIT DATABASE ~ ALREADY HAVE DATA...");
         } else
             System.out.println(">>> END INIT DATABASE");
