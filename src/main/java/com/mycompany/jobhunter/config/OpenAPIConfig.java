@@ -2,6 +2,8 @@ package com.mycompany.jobhunter.config;
 
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.Components;
@@ -15,6 +17,9 @@ import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class OpenAPIConfig {
+
+    @Value("${server.port}")
+    private String port;
 
     private SecurityScheme createAPIKeyScheme() {
         return new SecurityScheme()
@@ -56,7 +61,7 @@ public class OpenAPIConfig {
         return new OpenAPI()
                 .info(createApiInfo())
                 .servers(List.of(
-                        createServer("http://localhost:8081", "Server URL in Development environment")))
+                        createServer("http://localhost:" + port, "Server URL in Development environment")))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer token"))
                 .components(new Components().addSecuritySchemes("Bearer token", createAPIKeyScheme()));
     }
