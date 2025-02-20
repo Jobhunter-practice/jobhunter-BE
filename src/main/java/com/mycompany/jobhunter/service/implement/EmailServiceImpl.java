@@ -1,9 +1,10 @@
 package com.mycompany.jobhunter.service.implement;
 
 import java.nio.charset.StandardCharsets;
+
+import com.mycompany.jobhunter.service.contract.IEmailService;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -15,20 +16,21 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
-public class EmailService {
+public class EmailServiceImpl implements IEmailService {
 
     private final MailSender mailSender;
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
 
-    public EmailService(MailSender mailSender,
-                        JavaMailSender javaMailSender,
-                        SpringTemplateEngine templateEngine) {
+    public EmailServiceImpl(MailSender mailSender,
+                            JavaMailSender javaMailSender,
+                            SpringTemplateEngine templateEngine) {
         this.mailSender = mailSender;
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
     }
 
+    @Override
     public void sendEmailSync(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = this.javaMailSender.createMimeMessage();
@@ -44,6 +46,7 @@ public class EmailService {
     }
 
     @Async
+    @Override
     public void sendEmailFromTemplateSync(
             String to,
             String subject,

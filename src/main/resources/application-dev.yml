@@ -1,0 +1,60 @@
+server:
+  port: 8081
+
+spring:
+  # Database configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/jobhunter_dev
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 10000 #10s
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+
+
+
+  # File Upload Configuration
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  # Email Configuration (with Gmail)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: pdanhkhoaa@gmail.com
+    password: hpnr kxtf dzit lovg
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+# JWT Configuration
+jobhunter:
+  jwt:
+    base64-secret: TRrx3ZoD9xgevlM73MU8/ay9VO+8RJ7NjvFh5Ab0xoTsKzuPYwCOKDZugGYsVxroYRfP94DH6jBxBhFyBPaQQQ==
+    access-token-validity-in-seconds: 8640000  # 100 days
+    refresh-token-validity-in-seconds: 8640000  # 100 days
+
+  # File upload base path
+  upload-file:
+    base-uri: file:///S:/Java/JavaSP/job%20hunter/upload/
+
+#enable swagger
+springdoc:
+  override-with-generic-response: false

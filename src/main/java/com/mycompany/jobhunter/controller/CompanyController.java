@@ -4,13 +4,9 @@ import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.Company;
 import com.mycompany.jobhunter.service.contract.ICompanyService;
 import com.mycompany.jobhunter.util.annotation.ApiMessage;
-
 import com.mycompany.jobhunter.util.error.IdInvalidException;
 import com.turkraft.springfilter.boot.Filter;
-
-import jakarta.persistence.Id;
 import jakarta.validation.Valid;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;

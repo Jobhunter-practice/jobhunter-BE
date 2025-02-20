@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Job Notification</title>
+</head>
+<body>
+<p>Hello, <span th:text="${name}"></span>!</p>
+<p>Here are your job details:</p>
+<ul>
+    <li th:each="job : ${jobs}">
+        <strong th:text="${job.name}"></strong> - <span th:text="${job.salary}"></span>
+    </li>
+</ul>
+</body>
+</html>

@@ -7,6 +7,7 @@ import com.mycompany.jobhunter.domain.entity.Subscriber;
 import com.mycompany.jobhunter.repository.JobRepository;
 import com.mycompany.jobhunter.repository.SkillRepository;
 import com.mycompany.jobhunter.repository.SubscriberRepository;
+import com.mycompany.jobhunter.service.contract.IEmailService;
 import com.mycompany.jobhunter.service.contract.ISubscriberService;
 import org.springframework.stereotype.Service;
 
@@ -20,24 +21,19 @@ public class SubscriberServiceImpl implements ISubscriberService {
     private final SubscriberRepository subscriberRepository;
     private final SkillRepository skillRepository;
     private final JobRepository jobRepository;
-    private final EmailService emailService;
+    private final IEmailService emailService;
 
     public SubscriberServiceImpl(
             SubscriberRepository subscriberRepository,
             SkillRepository skillRepository,
             JobRepository jobRepository,
-            EmailService emailService
+            IEmailService emailService
     ) {
         this.subscriberRepository = subscriberRepository;
         this.skillRepository = skillRepository;
         this.jobRepository = jobRepository;
         this.emailService = emailService;
     }
-
-    // @Scheduled(cron = "*/10 * * * * *")
-    // public void testCron() {
-    // System.out.println(">>> TEST CRON");
-    // }
 
     @Override
     public boolean isExistsByEmail(String email) {
@@ -109,10 +105,11 @@ public class SubscriberServiceImpl implements ISubscriberService {
 
                         this.emailService.sendEmailFromTemplateSync(
                                 sub.getEmail(),
-                                "Cơ hội việc làm hot đang chờ đón bạn, khám phá ngay",
+                                "Hot deals are available",
                                 "job",
                                 sub.getName(),
-                                arr);
+                                arr
+                        );
                     }
                 }
             }

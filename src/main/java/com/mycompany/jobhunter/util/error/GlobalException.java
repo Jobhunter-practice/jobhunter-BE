@@ -1,6 +1,7 @@
 package com.mycompany.jobhunter.util.error;
 
 import com.mycompany.jobhunter.domain.dto.response.RestResponse;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;

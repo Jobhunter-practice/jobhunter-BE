@@ -1,17 +1,15 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.2'
-    id 'io.spring.dependency-management' version '1.1.7'
-    id("io.freefair.lombok") version "8.6"
+    id 'org.springframework.boot' version '3.2.3'  // Latest stable version as of April 2024
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'io.freefair.lombok' version '8.6'
 }
 
 group = 'com.mycompany'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
@@ -19,19 +17,44 @@ repositories {
 }
 
 dependencies {
+    // Web and Core
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'com.turkraft.springfilter:jpa:3.1.9'
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // Database
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // Logging - Switch to Log4j2
+    configurations {
+        all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+    // Template Engine
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+    // Email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // API Documentation
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+
+    // Query Builder
+    implementation 'com.turkraft.springfilter:jpa:3.1.7'
+
+    // Development Tools
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    runtimeOnly 'com.mysql:mysql-connector-j'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
