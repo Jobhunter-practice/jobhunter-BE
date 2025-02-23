@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1740104837846-1" author="anhkhoa">
+        <createTable tableName="companies">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_companies"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="MEDIUMTEXT"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="logo" type="VARCHAR(255)"/>
+            <column name="established_date" type="DATETIME"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-2" author="anhkhoa">
+        <createTable tableName="job_skill">
+            <column name="job_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="skill_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-3" author="anhkhoa">
+        <createTable tableName="jobs">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_jobs"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="location" type="VARCHAR(255)"/>
+            <column name="salary" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="level" type="VARCHAR(255)"/>
+            <column name="description" type="MEDIUMTEXT"/>
+            <column name="start_date" type="DATETIME"/>
+            <column name="end_date" type="DATETIME"/>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-4" author="anhkhoa">
+        <createTable tableName="permission_role">
+            <column name="permission_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-5" author="anhkhoa">
+        <createTable tableName="permissions">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_permissions"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="api_path" type="VARCHAR(255)"/>
+            <column name="method" type="VARCHAR(255)"/>
+            <column name="module" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-6" author="anhkhoa">
+        <createTable tableName="resumes">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_resumes"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="job_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-7" author="anhkhoa">
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_roles"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-8" author="anhkhoa">
+        <createTable tableName="skills">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_skills"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-9" author="anhkhoa">
+        <createTable tableName="subscriber_skill">
+            <column name="skill_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscriber_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-10" author="anhkhoa">
+        <createTable tableName="subscribers">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_subscribers"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-11" author="anhkhoa">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="age" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender" type="VARCHAR(255)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="refresh_token" type="MEDIUMTEXT"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="role_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740104837846-12" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="jobs" constraintName="FK_JOBS_ON_COMPANY"
+                                 referencedColumnNames="id" referencedTableName="companies"/>
+    </changeSet>
+    <changeSet id="1740104837846-13" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="job_id" baseTableName="resumes" constraintName="FK_RESUMES_ON_JOB"
+                                 referencedColumnNames="id" referencedTableName="jobs"/>
+    </changeSet>
+    <changeSet id="1740104837846-14" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="resumes" constraintName="FK_RESUMES_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1740104837846-15" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="users" constraintName="FK_USERS_ON_COMPANY"
+                                 referencedColumnNames="id" referencedTableName="companies"/>
+    </changeSet>
+    <changeSet id="1740104837846-16" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="users" constraintName="FK_USERS_ON_ROLE"
+                                 referencedColumnNames="id" referencedTableName="roles"/>
+    </changeSet>
+    <changeSet id="1740104837846-17" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="job_id" baseTableName="job_skill" constraintName="fk_job_skill_on_job"
+                                 referencedColumnNames="id" referencedTableName="jobs"/>
+    </changeSet>
+    <changeSet id="1740104837846-18" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="skill_id" baseTableName="job_skill"
+                                 constraintName="fk_job_skill_on_skill" referencedColumnNames="id"
+                                 referencedTableName="skills"/>
+    </changeSet>
+    <changeSet id="1740104837846-19" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="permission_role"
+                                 constraintName="fk_perrol_on_permission" referencedColumnNames="id"
+                                 referencedTableName="permissions"/>
+    </changeSet>
+    <changeSet id="1740104837846-20" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="permission_role"
+                                 constraintName="fk_perrol_on_role" referencedColumnNames="id"
+                                 referencedTableName="roles"/>
+    </changeSet>
+    <changeSet id="1740104837846-21" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="skill_id" baseTableName="subscriber_skill"
+                                 constraintName="fk_subski_on_skill" referencedColumnNames="id"
+                                 referencedTableName="skills"/>
+    </changeSet>
+    <changeSet id="1740104837846-22" author="anhkhoa">
+        <addForeignKeyConstraint baseColumnNames="subscriber_id" baseTableName="subscriber_skill"
+                                 constraintName="fk_subski_on_subscriber" referencedColumnNames="id"
+                                 referencedTableName="subscribers"/>
+    </changeSet>
+
+</databaseChangeLog>

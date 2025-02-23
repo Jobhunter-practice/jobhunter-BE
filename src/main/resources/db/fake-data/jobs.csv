@@ -1,0 +1,3 @@
+id,name,location,salary,quantity,level,description,start_date,end_date,active,created_at,updated_at,created_by,updated_by,company_id
+1,Java Junior,Ho Chi Minh,3000,3,JUNIOR,Java Junior with 3-yoe,,,1,2025-02-21 02:38:58,,"",,1
+2,Nodejs Junior,Ho Chi Minh,3000,3,JUNIOR,Nodejs Junior with 3-yoe,,,1,2025-02-21 02:38:58,,"",,1

@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/initial_schema.xml
+  - include:
+      file: db/changelog/drop_company_column.xml
+  - include:
+      file: db/changelog/added_data.xml

@@ -39,7 +39,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         String[] whiteList = {
                 "/",
-                "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register",
+                "/api/v1/auth", "/api/v1/auth/**", "/api/v1/auth/social-login/callback",
                 "/storage/**",
                 "/api/v1/email/**",
                 "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
@@ -53,11 +53,11 @@ public class SecurityConfiguration {
                                 .requestMatchers(whiteList).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/companies/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/jobs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/auth/social-login/callback").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/skills/**").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint).authenticationEntryPoint(customAuthenticationEntryPoint))
-
                 .formLogin(f -> f.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

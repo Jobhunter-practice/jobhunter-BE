@@ -1,17 +1,23 @@
 package com.mycompany.jobhunter.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.jobhunter.MainApplication;
 import com.mycompany.jobhunter.domain.dto.request.ReqLoginDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResLoginDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.entity.User;
+import com.mycompany.jobhunter.service.contract.IAuthService;
 import com.mycompany.jobhunter.service.contract.IUserService;
+import com.mycompany.jobhunter.util.GoogleAuthUtil;
 import com.mycompany.jobhunter.util.SecurityUtil;
 import com.mycompany.jobhunter.util.annotation.ApiMessage;
 import com.mycompany.jobhunter.util.error.DuplicatedKeyException;
 import com.mycompany.jobhunter.util.error.MissingCookiesException;
-
 import jakarta.validation.Valid;
-
+import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,35 +32,135 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.Instant;
+import java.util.Map;
+import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final IUserService userService;
     private final SecurityUtil securityUtil;
+    private final GoogleAuthUtil googleAuthUtil;
     private final PasswordEncoder passwordEncoder;
+    private final IAuthService authService;
+
+    private static final Logger logger = LogManager.getLogger(MainApplication.class);
 
     @Value("${jobhunter.jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenExpiration;
 
     public AuthController(
             AuthenticationManagerBuilder authenticationManagerBuilder,
-            IUserService userService, SecurityUtil securityUtil,
+            IUserService userService, SecurityUtil securityUtil, GoogleAuthUtil googleAuthUtil, IAuthService authService,
             PasswordEncoder passwordEncoder) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userService = userService;
+        this.authService = authService;
         this.securityUtil = securityUtil;
+        this.googleAuthUtil = googleAuthUtil;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @GetMapping("/auth/social-login")
+    @ApiMessage("Login via social")
+    public ResponseEntity<Optional<String>> socialLogin(@RequestParam String provider){
+        logger.info("Get auth url for social login");
+        if ("google".equalsIgnoreCase(provider.trim().toLowerCase())) {
+            String googleAuthUrl = googleAuthUtil.generateGoogleAuthUrl();
+            return ResponseEntity.ok(Optional.of(googleAuthUrl));
+        }
+        return ResponseEntity.badRequest().body(Optional.of("Invalid provider"));
+    }
+
+    @GetMapping("/auth/social-login/callback")
+    @ApiMessage("Exchange code for token")
+    public ResponseEntity<ResLoginDTO> socialLogin(
+            @RequestParam String provider,
+            @RequestParam String code
+    ) throws IOException, BadRequestException {
+        logger.info("Exchange code for token");
+        Map<String, Object> userInfo = authService.authenticateAndFetchProfile(provider, code);
+
+        User currentUserDB = null;
+        switch (provider.trim().toLowerCase()) {
+            case "google":
+                String email = userInfo.get("email").toString();
+                currentUserDB = userService.handleGetUserByEmail(email);
+                if(currentUserDB == null){
+                    currentUserDB = new User();
+                    currentUserDB.setEmail(email);
+                    currentUserDB.setName(userInfo.get("name").toString());
+                    currentUserDB.setPassword("googleLoginDefaultPassword");
+                    currentUserDB.setCreatedAt(Instant.now());
+                    currentUserDB.setCreatedBy(email);
+                    this.userService.createUser(currentUserDB);
+
+                    Object userBD = userService.handleGetUserByEmail(email);
+                    if (!(userBD instanceof User)) {
+                        throw new BadRequestException("Duplicated user");
+                    }
+                    currentUserDB = (User) userBD;
+                }
+                break;
+            default:
+                throw new BadRequestException("Invalid provider");
+        }
+
+        ResLoginDTO result = new ResLoginDTO();
+
+        ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
+                currentUserDB.getId(),
+                currentUserDB.getEmail(),
+                currentUserDB.getName(),
+                currentUserDB.getRole()
+        );
+
+        result.setUser(userLogin);
+
+        // create access_token
+        String accessToken = securityUtil.createAccessToken(
+                currentUserDB.getId(),
+                currentUserDB.getName(),
+                currentUserDB.getEmail()
+        );
+        result.setAccessToken(accessToken);
+
+        // create refresh_token
+        String refreshToken = securityUtil.createRefreshToken(
+                currentUserDB.getId(),
+                currentUserDB.getName(),
+                currentUserDB.getEmail()
+        );
+        result.setAccessToken(refreshToken);
+        // update user's refresh token
+        this.userService.updateRefreshToken(refreshToken, currentUserDB.getEmail());
+
+        // set cookies
+        ResponseCookie resCookies = ResponseCookie
+                .from("refresh_token", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/").maxAge(refreshTokenExpiration)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.SET_COOKIE, resCookies.toString())
+                .body(result);
     }
 
     @PostMapping("/auth/login")
     @ApiMessage("Login api")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO user) {
         // Inject username and password
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), // In this case, I use "email" prop at "loadUserByUsername"
-                user.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                user.getUsername(), // In this case, I use "email" prop at "loadUserByUsername"
+                user.getPassword()
+        );
 
         // Get authentication by spring security (override **loadUserByUsername**)
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);

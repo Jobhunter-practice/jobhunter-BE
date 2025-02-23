@@ -2,6 +2,7 @@ package com.mycompany.jobhunter.util.error;
 
 import com.mycompany.jobhunter.domain.dto.response.RestResponse;
 import io.swagger.v3.oas.annotations.Hidden;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -74,17 +75,15 @@ public class GlobalException {
         return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<RestResponse<Object>> validationError(MethodArgumentNotValidException ex) {
-        BindingResult result = ex.getBindingResult();
-        final List<FieldError> fieldErrors = result.getFieldErrors();
-
+    @ExceptionHandler(value = {
+            MethodArgumentNotValidException.class,
+            BadRequestException.class
+    })
+    public ResponseEntity<RestResponse<Object>> validationError(Exception ex) {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        res.setError(ex.getBody().getDetail());
-
-        List<String> errors = fieldErrors.stream().map(f -> f.getDefaultMessage()).collect(Collectors.toList());
-        res.setMessage(errors.size() > 1 ? errors : errors.get(0));
+        res.setError(ex.toString());
+        res.setMessage(ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }

@@ -3,6 +3,13 @@ spring:
     name: jobhunter
   profiles:
     active: dev
+  # Pagination Configuration
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
 
 logging:
   config: classpath:config/log4j2/log4j2-${spring.profiles.active}.xml
+
+

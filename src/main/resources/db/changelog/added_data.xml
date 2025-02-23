@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1740121641080-1-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/companies.csv"
+                separator=","
+                tableName="companies"
+                usePreparedStatements="true">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="MEDIUMTEXT"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="logo" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-2-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/jobs.csv"
+                separator=","
+                tableName="jobs"
+                usePreparedStatements="true">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="location" type="VARCHAR(255)"/>
+            <column name="salary" type="DOUBLE"/>
+            <column name="quantity" type="INT"/>
+            <column name="level" type="VARCHAR(255)"/>
+            <column name="description" type="MEDIUMTEXT"/>
+            <column name="start_date" type="DATETIME"/>
+            <column name="end_date" type="DATETIME"/>
+            <column name="active" type="BOOLEAN"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-3-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/permissions.csv"
+                separator=","
+                tableName="permissions"
+                usePreparedStatements="true">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="api_path" type="VARCHAR(255)"/>
+            <column name="method" type="VARCHAR(255)"/>
+            <column name="module" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-4-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/resumes.csv"
+                separator=","
+                tableName="resumes"
+                usePreparedStatements="true">
+            <column name="id" type="BIGINT"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="job_id" type="BIGINT"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-5-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/roles.csv"
+                separator=","
+                tableName="roles"
+                usePreparedStatements="true">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="active" type="BOOLEAN"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-6-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/skills.csv"
+                separator=","
+                tableName="skills"
+                usePreparedStatements="true">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-7-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/subscribers.csv"
+                separator=","
+                tableName="subscribers"
+                usePreparedStatements="true">
+            <column name="id" type="BIGINT"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-8-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/users.csv"
+                separator=","
+                tableName="users"
+                usePreparedStatements="true">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="age" type="INT"/>
+            <column name="gender" type="VARCHAR(255)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="refresh_token" type="MEDIUMTEXT"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="role_id" type="BIGINT"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-9-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/job_skill.csv"
+                separator=","
+                tableName="job_skill"
+                usePreparedStatements="true">
+            <column name="job_id" type="BIGINT"/>
+            <column name="skill_id" type="BIGINT"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-10-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/permission_role.csv"
+                separator=","
+                tableName="permission_role"
+                usePreparedStatements="true">
+            <column name="permission_id" type="BIGINT"/>
+            <column name="role_id" type="BIGINT"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="1740121641080-11-data" author="anhkhoa">
+        <loadData
+                file="db/fake-data/subscriber_skill.csv"
+                separator=","
+                tableName="subscriber_skill"
+                usePreparedStatements="true">
+            <column name="skill_id" type="BIGINT"/>
+            <column name="subscriber_id" type="BIGINT"/>
+        </loadData>
+    </changeSet>
+
+
+</databaseChangeLog>

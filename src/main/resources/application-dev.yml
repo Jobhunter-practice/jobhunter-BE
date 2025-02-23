@@ -12,6 +12,28 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 5
       connection-timeout: 10000 #10s
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GG_CLIENT_SECRET}
+            redirect-uri: http://localhost:3000/login/google/callback
+            scope:
+              - https://www.googleapis.com/auth/userinfo.profile
+        provider:
+          google:
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+
+
+
+  # liquibase
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog-master.yaml
+    contexts: ${spring.profiles.active}
+
   jpa:
     database: MYSQL
     show-sql: true
@@ -20,9 +42,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-
-
 
   # File Upload Configuration
   servlet:
@@ -42,7 +61,6 @@ spring:
           auth: true
           starttls:
             enable: true
-
 
 # JWT Configuration
 jobhunter:
