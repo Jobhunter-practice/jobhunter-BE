@@ -5,16 +5,21 @@ import com.mycompany.jobhunter.domain.dto.response.user.ResUpdateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
+import com.mycompany.jobhunter.domain.entity.enumeration.GenderEnum;
 import com.mycompany.jobhunter.repository.UserRepository;
 import com.mycompany.jobhunter.service.contract.IUserService;
 import com.mycompany.jobhunter.util.SecurityUtil;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -145,5 +150,54 @@ public class UserServiceImpl implements IUserService {
             currentUser = this.userRepository.save(currentUser);
         }
         return currentUser;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public User getOrCreateGoogleUser(String email, Map<String, Object> userInfo) {
+        try {
+            User user = handleGetUserByEmail(email);
+            if (user != null) {
+                return user;
+            }
+
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setName(userInfo.get("name").toString());
+
+            Map<String, GenderEnum> genderEnumMap = Map.of(
+                    "male", GenderEnum.MALE,
+                    "female", GenderEnum.FEMALE
+            );
+
+            newUser.setGender(genderEnumMap.get(userInfo.get("gender").toString()));
+            newUser.setPassword("googleLoginDefaultPassword");
+            newUser.setCreatedAt(Instant.now());
+            newUser.setCreatedBy(email);
+
+            try {
+                ResCreateUserDTO usr = createUser(newUser);
+                User res = new User();
+                res.setId(usr.getId());
+                res.setEmail(usr.getEmail());
+                res.setName(usr.getName());
+                res.setAge(usr.getAge());
+                res.setUpdatedAt(Instant.now());
+                res.setUpdatedBy(email);
+                res.setCreatedAt(Instant.now());
+                res.setCreatedBy(email);
+
+                return res;
+            } catch (DataIntegrityViolationException e) {
+                // If another transaction created the user first, fetch and return it
+                User existingUser = handleGetUserByEmail(email);
+                if (existingUser != null) {
+                    return existingUser;
+                }
+                throw e;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to process user creation", e);
+        }
     }
 }

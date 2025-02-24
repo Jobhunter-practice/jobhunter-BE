@@ -8,6 +8,8 @@ import com.mycompany.jobhunter.domain.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Map;
+
 public interface IUserService {
     public Boolean isEmailExisted(String email);
 
@@ -31,4 +33,5 @@ public interface IUserService {
 
     public User handleUpdateUser(User user);
 
+    public User getOrCreateGoogleUser(String email, Map<String, Object> userInfo);
 }

@@ -1,14 +1,13 @@
 package com.mycompany.jobhunter.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.jobhunter.MainApplication;
 import com.mycompany.jobhunter.domain.dto.request.ReqLoginDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResLoginDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.entity.User;
+import com.mycompany.jobhunter.domain.entity.enumeration.GenderEnum;
 import com.mycompany.jobhunter.service.contract.IAuthService;
 import com.mycompany.jobhunter.service.contract.IUserService;
-import com.mycompany.jobhunter.util.GoogleAuthUtil;
 import com.mycompany.jobhunter.util.SecurityUtil;
 import com.mycompany.jobhunter.util.annotation.ApiMessage;
 import com.mycompany.jobhunter.util.error.DuplicatedKeyException;
@@ -34,17 +33,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final IUserService userService;
     private final SecurityUtil securityUtil;
-    private final GoogleAuthUtil googleAuthUtil;
     private final PasswordEncoder passwordEncoder;
     private final IAuthService authService;
 
@@ -55,13 +53,13 @@ public class AuthController {
 
     public AuthController(
             AuthenticationManagerBuilder authenticationManagerBuilder,
-            IUserService userService, SecurityUtil securityUtil, GoogleAuthUtil googleAuthUtil, IAuthService authService,
-            PasswordEncoder passwordEncoder) {
+            IUserService userService, SecurityUtil securityUtil, IAuthService authService,
+            PasswordEncoder passwordEncoder
+    ) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userService = userService;
         this.authService = authService;
         this.securityUtil = securityUtil;
-        this.googleAuthUtil = googleAuthUtil;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -70,7 +68,7 @@ public class AuthController {
     public ResponseEntity<Optional<String>> socialLogin(@RequestParam String provider){
         logger.info("Get auth url for social login");
         if ("google".equalsIgnoreCase(provider.trim().toLowerCase())) {
-            String googleAuthUrl = googleAuthUtil.generateGoogleAuthUrl();
+            String googleAuthUrl = authService.generateGoogleAuthUrl();
             return ResponseEntity.ok(Optional.of(googleAuthUrl));
         }
         return ResponseEntity.badRequest().body(Optional.of("Invalid provider"));
@@ -89,21 +87,12 @@ public class AuthController {
         switch (provider.trim().toLowerCase()) {
             case "google":
                 String email = userInfo.get("email").toString();
-                currentUserDB = userService.handleGetUserByEmail(email);
-                if(currentUserDB == null){
-                    currentUserDB = new User();
-                    currentUserDB.setEmail(email);
-                    currentUserDB.setName(userInfo.get("name").toString());
-                    currentUserDB.setPassword("googleLoginDefaultPassword");
-                    currentUserDB.setCreatedAt(Instant.now());
-                    currentUserDB.setCreatedBy(email);
-                    this.userService.createUser(currentUserDB);
 
-                    Object userBD = userService.handleGetUserByEmail(email);
-                    if (!(userBD instanceof User)) {
-                        throw new BadRequestException("Duplicated user");
-                    }
-                    currentUserDB = (User) userBD;
+                try {
+                    currentUserDB = userService.getOrCreateGoogleUser(email, userInfo);
+                } catch (Exception e) {
+                    logger.error("Error during user creation", e);
+                    throw new BadRequestException("Error processing request");
                 }
                 break;
             default:
@@ -156,6 +145,7 @@ public class AuthController {
     @PostMapping("/auth/login")
     @ApiMessage("Login api")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO user) {
+        logger.info("login w username and password");
         // Inject username and password
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getUsername(), // In this case, I use "email" prop at "loadUserByUsername"
