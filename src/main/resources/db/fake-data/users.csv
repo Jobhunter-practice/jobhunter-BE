@@ -1,2 +1,2 @@
 id,name,email,password,age,gender,address,refresh_token,created_at,updated_at,created_by,updated_by,company_id,role_id
-1,I'm super admin,admin@gmail.com,$2a$10$Bk4sMgsY.81rKG7ds6fCveXYIFiqL87p5adsp.EqbfpUEhHsazELO,25,MALE,hn,,2025-02-21 02:38:58,,"",,,1
+1,I'm super admin,admin@gmail.com,$2a$10$Bk4sMgsY.81rKG7ds6fCveXYIFiqL87p5adsp.EqbfpUEhHsazELO,25,MALE,hn,eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJleHAiOjE3NDkzMTQ2MTUsImlhdCI6MTc0MDY3NDYxNSwidXNlciI6eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJuYW1lIjoiSSdtIHN1cGVyIGFkbWluIn19.hD4KMTDvX1VnDg9F1ZDdI2WPwBBNPigXU9lNPvwhC9EEPTN8jYxTOxlX-EI-YVHUT1hpsjHNm7VEaF32Y1GPSw,2025-02-21 02:38:58,2025-02-27 16:43:35,,admin@gmail.com,,1

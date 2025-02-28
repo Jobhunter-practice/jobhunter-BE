@@ -1,5 +1,6 @@
 package com.mycompany.jobhunter.service.contract;
 
+import com.mycompany.jobhunter.domain.dto.oauth.OAuthUserInfo;
 import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResUpdateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
@@ -33,5 +34,5 @@ public interface IUserService {
 
     public User handleUpdateUser(User user);
 
-    public User getOrCreateUser(String email, Map<String, Object> userInfo);
+    public User getOrCreateUser(String email, OAuthUserInfo userInfo);
 }

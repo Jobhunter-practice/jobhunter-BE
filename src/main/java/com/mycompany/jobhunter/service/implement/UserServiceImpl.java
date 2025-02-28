@@ -1,11 +1,15 @@
 package com.mycompany.jobhunter.service.implement;
 
+import com.mycompany.jobhunter.domain.dto.oauth.OAuthUserInfo;
 import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResUpdateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
+import com.mycompany.jobhunter.domain.entity.Company;
+import com.mycompany.jobhunter.domain.entity.Role;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.domain.entity.enumeration.GenderEnum;
+import com.mycompany.jobhunter.repository.CompanyRepository;
 import com.mycompany.jobhunter.repository.RoleRepository;
 import com.mycompany.jobhunter.repository.UserRepository;
 import com.mycompany.jobhunter.service.contract.IUserService;
@@ -22,16 +26,23 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final CompanyRepository companyRepository;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            CompanyRepository companyRepository
+    ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.companyRepository = companyRepository;
     }
 
     private ResCreateUserDTO convertToResCreateUserDTO(User user) {
@@ -56,7 +67,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResCreateUserDTO createUser(User user) {
-        user.setRole(this.roleRepository.findByName("NORMAL_USER"));
+        if(user.getRole() == null) {
+            user.setRole(this.roleRepository.findByName("NORMAL_USER"));
+        }
         ResCreateUserDTO userDTO = convertToResCreateUserDTO(this.userRepository.save(user));
         return userDTO;
     }
@@ -102,8 +115,17 @@ public class UserServiceImpl implements IUserService {
         res.setName(user.getName());
         res.setAge(user.getAge());
         res.setCreatedAt(user.getCreatedAt());
+        res.setUpdatedAt(user.getUpdatedAt());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
+
+        if(user.getCompany() != null) {
+            res.setCompany(new ResUserDTO.CompanyUser(user.getCompany().getId(), user.getCompany().getName()));
+        }
+        if(user.getRole() != null) {
+            res.setRole(new ResUserDTO.RoleUser(user.getRole().getId(), user.getRole().getName()));
+        }
+
         return res;
     }
 
@@ -158,10 +180,27 @@ public class UserServiceImpl implements IUserService {
     public User handleUpdateUser(User reqUser) {
         User currentUser = this.fetchUserById(reqUser.getId());
         if (currentUser != null) {
+            currentUser.setName(reqUser.getName());
+
+            // set company
+            if(reqUser.getCompany() != null) {
+                Optional<Company> c = companyRepository.findById(reqUser.getCompany().getId());
+                if(c.isPresent()) {
+                    currentUser.setCompany(c.get());
+                }
+            }
+
+            // set role
+            if(reqUser.getRole() != null) {
+                Optional<Role> r = roleRepository.findById(reqUser.getRole().getId());
+                if(r.isPresent()) {
+                    currentUser.setRole(r.get());
+                }
+            }
+
             currentUser.setAddress(reqUser.getAddress());
             currentUser.setGender(reqUser.getGender());
             currentUser.setAge(reqUser.getAge());
-            currentUser.setName(reqUser.getName());
             currentUser.setUpdatedAt(Instant.now());
 
             // update
@@ -171,7 +210,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User getOrCreateUser(String email, Map<String, Object> userInfo) {
+    public User getOrCreateUser(String email, OAuthUserInfo userInfo) {
         try {
             User user = handleGetUserByEmail(email);
             if (user != null) {
@@ -180,14 +219,14 @@ public class UserServiceImpl implements IUserService {
 
             User newUser = new User();
             newUser.setEmail(email);
-            newUser.setName(userInfo.get("name").toString());
+            newUser.setName(userInfo.getName());
 
             Map<String, GenderEnum> genderEnumMap = Map.of(
                     "male", GenderEnum.MALE,
                     "female", GenderEnum.FEMALE
             );
 
-            newUser.setGender(genderEnumMap.get(userInfo.get("gender").toString()));
+            newUser.setGender(genderEnumMap.get(userInfo.getGender()));
             newUser.setPassword("socialLoginDefaultPassword");
             newUser.setCreatedAt(Instant.now());
             newUser.setCreatedBy(email);

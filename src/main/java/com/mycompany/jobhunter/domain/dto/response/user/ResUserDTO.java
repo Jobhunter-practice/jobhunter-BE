@@ -24,7 +24,6 @@ public class ResUserDTO {
     private Instant createdAt;
 
     private CompanyUser company;
-
     private RoleUser role;
 
     @Getter

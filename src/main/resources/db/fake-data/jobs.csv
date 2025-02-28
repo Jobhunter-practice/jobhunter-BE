@@ -1,19 +1,19 @@
 id,name,location,salary,quantity,level,description,start_date,end_date,active,created_at,updated_at,created_by,updated_by,company_id
-1,Software Engineer (iOS),CUPERTINO,12000,5,MIDDLE,Develop and maintain iOS applications for millions of users at Apple.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",2
-2,Cloud Solutions Architect,SEATTLE,15000,4,SENIOR,Design and optimize cloud infrastructure for Amazon Web Services (AWS).,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",3
-3,Machine Learning Engineer,MOUNTAIN VIEW,13000,3,SENIOR,Build advanced machine learning models to improve Google's core search algorithms.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",5
-4,Frontend Engineer (React),MENLO PARK,11000,4,MIDDLE,Create intuitive user interfaces for Meta's social media platforms.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",1
-5,Data Engineer,LOS GATOS,12500,2,SENIOR,Design scalable data pipelines to optimize Netflix's content delivery and analytics.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",4
-6,Security Engineer,CUPERTINO,13500,3,SENIOR,Ensure the security of Apple’s products by identifying vulnerabilities and implementing safeguards.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",2
-7,DevOps Engineer,SEATTLE,14000,4,SENIOR,Develop CI/CD pipelines and ensure system scalability for Amazon's e-commerce platform.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",3
-8,Backend Engineer (Java),MOUNTAIN VIEW,12500,5,MIDDLE,Design and maintain backend services for Google's large-scale applications.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",5
-9,Product Manager,MENLO PARK,16000,3,SENIOR,Lead product development and deliver new features for Meta’s social platforms.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",1
-10,Content Recommendation Engineer,LOS GATOS,13000,3,MIDDLE,Build algorithms to personalize content recommendations for Netflix users.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",4
-11,AR/VR Developer,MENLO PARK,13500,2,MIDDLE,Develop immersive AR/VR experiences for Meta’s Reality Labs division.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",1
-12,Site Reliability Engineer,MOUNTAIN VIEW,14500,3,SENIOR,Maintain system reliability and performance for Google's global infrastructure.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",5
-13,Fullstack Engineer (React + Node.js),CUPERTINO,13000,4,MIDDLE,Develop fullstack applications to enhance Apple's ecosystem.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",2
-14,AI Research Scientist,SEATTLE,18000,2,LEAD,Conduct advanced AI research and deploy machine learning solutions at AWS.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",3
-15,UI/UX Designer,LOS GATOS,11000,2,MIDDLE,Design user-centric interfaces and improve user experiences for Netflix's platforms.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",4
-16,Mobile Engineer (Android),SEATTLE,12500,3,MIDDLE,Build and optimize Android applications for Amazon's mobile ecosystem.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",3
-17,Data Scientist,MOUNTAIN VIEW,15000,3,SENIOR,Analyze and interpret data to drive insights across Google’s services.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",5
-18,Software Engineer (C++),CUPERTINO,14000,4,SENIOR,Develop performance-critical C++ software powering Apple’s core systems.,2025-03-01,2025-06-30,1,2025-02-21 02:38:58,,,"",2
+1,Software Engineer (iOS),CUPERTINO,12000,5,MIDDLE,Develop and maintain iOS applications for millions of users at Apple.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,2
+2,Cloud Solutions Architect,SEATTLE,15000,4,SENIOR,Design and optimize cloud infrastructure for Amazon Web Services (AWS).,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,3
+3,Machine Learning Engineer,MOUNTAIN VIEW,13000,3,SENIOR,Build advanced machine learning models to improve Google's core search algorithms.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,5
+4,Frontend Engineer (React),MENLO PARK,11000,4,MIDDLE,Create intuitive user interfaces for Meta's social media platforms.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,1
+5,Data Engineer,LOS GATOS,12500,2,SENIOR,Design scalable data pipelines to optimize Netflix's content delivery and analytics.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,4
+6,Security Engineer,CUPERTINO,13500,3,SENIOR,Ensure the security of Apple’s products by identifying vulnerabilities and implementing safeguards.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,2
+7,DevOps Engineer,SEATTLE,14000,4,SENIOR,Develop CI/CD pipelines and ensure system scalability for Amazon's e-commerce platform.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,3
+8,Backend Engineer (Java),MOUNTAIN VIEW,12500,5,MIDDLE,Design and maintain backend services for Google's large-scale applications.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,5
+9,Product Manager,MENLO PARK,16000,3,SENIOR,Lead product development and deliver new features for Meta’s social platforms.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,1
+10,Content Recommendation Engineer,LOS GATOS,13000,3,MIDDLE,Build algorithms to personalize content recommendations for Netflix users.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,4
+11,AR/VR Developer,MENLO PARK,13500,2,MIDDLE,Develop immersive AR/VR experiences for Meta’s Reality Labs division.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,1
+12,Site Reliability Engineer,MOUNTAIN VIEW,14500,3,SENIOR,Maintain system reliability and performance for Google's global infrastructure.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,5
+13,Fullstack Engineer (React + Node.js),CUPERTINO,13000,4,MIDDLE,Develop fullstack applications to enhance Apple's ecosystem.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,2
+14,AI Research Scientist,SEATTLE,18000,2,LEAD,Conduct advanced AI research and deploy machine learning solutions at AWS.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,3
+15,UI/UX Designer,LOS GATOS,11000,2,MIDDLE,Design user-centric interfaces and improve user experiences for Netflix's platforms.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,4
+16,Mobile Engineer (Android),SEATTLE,12500,3,MIDDLE,Build and optimize Android applications for Amazon's mobile ecosystem.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,3
+17,Data Scientist,MOUNTAIN VIEW,15000,3,SENIOR,Analyze and interpret data to drive insights across Google’s services.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,5
+18,Software Engineer (C++),CUPERTINO,14000,4,SENIOR,Develop performance-critical C++ software powering Apple’s core systems.,2025-03-01 00:00:00,2025-06-30 00:00:00,1,2025-02-21 02:38:58,,,,2

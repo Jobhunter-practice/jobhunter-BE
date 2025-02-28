@@ -1,5 +1,6 @@
 package com.mycompany.jobhunter.service;
 
+import com.mycompany.jobhunter.domain.dto.oauth.OAuthUserInfo;
 import com.mycompany.jobhunter.service.implement.AuthServiceImpl;
 import com.mycompany.jobhunter.util.AuthUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,12 +65,11 @@ class AuthServiceTest {
 
         when(authUtil.getUserInfoByGoogleAuthCode("valid-code")).thenReturn(mockProfile);
 
-        Map<String, Object> userData = authService.authenticateAndFetchProfile("google", "valid-code");
+        OAuthUserInfo userData = authService.authenticateAndFetchProfile("google", "valid-code");
 
-        assertEquals("google-id-123", userData.get("googleAccountID"));
-        assertEquals("test@example.com", userData.get("email"));
-        assertEquals("John Doe", userData.get("name"));
-        assertEquals("male", userData.get("gender"));
+        assertEquals("test@example.com", userData.getEmail());
+        assertEquals("John Doe", userData.getName());
+        assertEquals("male", userData.getGender());
     }
 
     @Test
@@ -82,11 +82,10 @@ class AuthServiceTest {
 
         when(authUtil.getUserInfoByGithubAuthCode("valid-code")).thenReturn(mockProfile);
 
-        Map<String, Object> userData = authService.authenticateAndFetchProfile("github", "valid-code");
+        OAuthUserInfo userData = authService.authenticateAndFetchProfile("github", "valid-code");
 
-        assertEquals("Unknown", userData.get("googleAccountID"));
-        assertEquals("github@example.com", userData.get("email"));
-        assertEquals("Jane Doe", userData.get("name"));
+        assertEquals("github@example.com", userData.getEmail());
+        assertEquals("Jane Doe", userData.getName());
     }
 
     @Test

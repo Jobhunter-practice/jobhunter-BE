@@ -1,5 +1,7 @@
 package com.mycompany.jobhunter.service.implement;
 
+import com.mycompany.jobhunter.domain.dto.oauth.OAuthUserInfo;
+import com.mycompany.jobhunter.domain.dto.oauth.OauthUserInfoFactory;
 import com.mycompany.jobhunter.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -74,32 +76,27 @@ public class AuthServiceImpl implements com.mycompany.jobhunter.service.contract
     }
 
     @Override
-    public Map<String, Object> authenticateAndFetchProfile(String provider, String code) throws IOException {
+    public OAuthUserInfo authenticateAndFetchProfile(String provider, String code) throws IOException {
         try {
-            Map<String, Object> profileData = new HashMap<>();
+            Map<String, Object> userInfo;
 
             switch (provider.trim().toLowerCase()) {
                 case "google":
-                    profileData = this.authUtil.getUserInfoByGoogleAuthCode(code);
+                    userInfo = authUtil.getUserInfoByGoogleAuthCode(code);
                     break;
                 case "github":
-                    profileData = this.authUtil.getUserInfoByGithubAuthCode(code);
+                    userInfo = authUtil.getUserInfoByGithubAuthCode(code);
                     break;
                 default:
                     throw new IllegalArgumentException("Unsupported provider: " + provider);
             }
 
-            if (profileData == null || profileData.isEmpty()) {
+            if (userInfo == null || userInfo.isEmpty()) {
                 throw new IOException("Failed to retrieve user profile data");
             }
 
-            Map<String, Object> userData = new HashMap<>();
-            userData.put("googleAccountID", profileData.getOrDefault("sub", "Unknown").toString());
-            userData.put("email", profileData.getOrDefault("email", "Unknown").toString());
-            userData.put("name", profileData.getOrDefault("name", "Unknown").toString());
-            userData.put("gender", profileData.getOrDefault("gender", "Unknown").toString());
+            return OauthUserInfoFactory.getOAuthUserInfo(provider.toLowerCase(), userInfo);
 
-            return userData;
         } catch (Exception e) {
             throw new IOException("Failed to authenticate with provider: " + provider, e);
         }

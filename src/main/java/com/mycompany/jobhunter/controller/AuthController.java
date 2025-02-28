@@ -1,6 +1,7 @@
 package com.mycompany.jobhunter.controller;
 
 import com.mycompany.jobhunter.MainApplication;
+import com.mycompany.jobhunter.domain.dto.oauth.OAuthUserInfo;
 import com.mycompany.jobhunter.domain.dto.request.ReqLoginDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResLoginDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
@@ -82,9 +83,9 @@ public class AuthController {
             @RequestParam String code
     ) throws IOException {
         logger.info("Exchange code for token");
-        Map<String, Object> userInfo = authService.authenticateAndFetchProfile(provider, code);
+        OAuthUserInfo userInfo = authService.authenticateAndFetchProfile(provider, code);
 
-        String email = userInfo.get("email").toString();
+        String email = userInfo.getEmail();
         User currentUserDB = userService.getOrCreateUser(email, userInfo);
 
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(

@@ -5,6 +5,11 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="disable-fk-checks" author="anhkhoa" runAlways="true" dbms="mysql">
+        <sql>SET FOREIGN_KEY_CHECKS=0;</sql>
+    </changeSet>
+
     <changeSet id="1740121641080-1-data" author="anhkhoa">
         <loadData
                 file="db/fake-data/companies.csv"
@@ -188,5 +193,8 @@
         </loadData>
     </changeSet>
 
+    <changeSet id="enable-fk-checks" author="anhkhoa" runAlways="true" dbms="mysql">
+        <sql>SET FOREIGN_KEY_CHECKS=1;</sql>
+    </changeSet>
 
 </databaseChangeLog>

@@ -65,7 +65,8 @@ public class GlobalException {
     }
 
     @ExceptionHandler(value = {
-            InvalidRequestBodyException.class
+            InvalidRequestBodyException.class,
+            IllegalArgumentException.class
     })
     public ResponseEntity<RestResponse<Object>> hanldeInvalidRequestBodyException(Exception ex) {
         RestResponse<Object> res = new RestResponse<Object>();
