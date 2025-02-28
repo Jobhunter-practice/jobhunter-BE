@@ -7,7 +7,6 @@ import com.mycompany.jobhunter.util.SecurityUtil;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

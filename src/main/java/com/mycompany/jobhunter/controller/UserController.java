@@ -1,16 +1,15 @@
 package com.mycompany.jobhunter.controller;
 
+import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResUpdateUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
-import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.service.contract.IUserService;
 import com.mycompany.jobhunter.util.SecurityUtil;
 import com.mycompany.jobhunter.util.annotation.ApiMessage;
 import com.mycompany.jobhunter.util.error.IdInvalidException;
 import com.mycompany.jobhunter.util.error.InvalidRequestBodyException;
-
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;

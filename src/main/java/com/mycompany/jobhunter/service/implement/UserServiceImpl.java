@@ -6,6 +6,7 @@ import com.mycompany.jobhunter.domain.dto.response.user.ResUserDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResultPaginationDTO;
 import com.mycompany.jobhunter.domain.entity.User;
 import com.mycompany.jobhunter.domain.entity.enumeration.GenderEnum;
+import com.mycompany.jobhunter.repository.RoleRepository;
 import com.mycompany.jobhunter.repository.UserRepository;
 import com.mycompany.jobhunter.service.contract.IUserService;
 import com.mycompany.jobhunter.util.SecurityUtil;
@@ -20,15 +21,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
-    private final SecurityUtil securityUtil;
-    public UserServiceImpl(UserRepository userRepository, SecurityUtil securityUtil) {
+    private final RoleRepository roleRepository;
+
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.securityUtil = securityUtil;
+        this.roleRepository = roleRepository;
     }
 
     private ResCreateUserDTO convertToResCreateUserDTO(User user) {
@@ -53,6 +56,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResCreateUserDTO createUser(User user) {
+        user.setRole(this.roleRepository.findByName("NORMAL_USER"));
         ResCreateUserDTO userDTO = convertToResCreateUserDTO(this.userRepository.save(user));
         return userDTO;
     }
@@ -77,7 +81,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User fetchUserById(long id) {
-        return userRepository.findById(id).orElse(null);
+        Optional<User> res = userRepository.findById(id);
+        if(res.isPresent()) {
+            return res.get();
+        }
+        return null;
     }
 
     @Override
@@ -114,21 +122,31 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResultPaginationDTO fetchAllUsers(Specification<User> spec, Pageable pageable) {
+        if (pageable == null) {
+            pageable = Pageable.unpaged();
+        }
         Page<User> pageUser = this.userRepository.findAll(spec, pageable);
+        if (pageUser == null) {
+            pageUser = Page.empty();
+        }
+
         ResultPaginationDTO rs = new ResultPaginationDTO();
         ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
 
-        mt.setPage(pageable.getPageNumber() + 1);
-        mt.setPageSize(pageable.getPageSize());
+        if (pageable.isUnpaged()) {
+            mt.setPage(1);
+            mt.setPageSize(pageUser.getSize());
+        } else {
+            mt.setPage(pageable.getPageNumber() + 1);
+            mt.setPageSize(pageable.getPageSize());
+        }
 
         mt.setPages(pageUser.getTotalPages());
         mt.setTotal(pageUser.getTotalElements());
-
         rs.setMeta(mt);
 
-        // remove sensitive data
-        List<ResUserDTO> listUser = pageUser.getContent()
-                .stream().map(item -> this.convertToResUserDTO(item))
+        List<ResUserDTO> listUser = pageUser.getContent().stream()
+                .map(this::convertToResUserDTO)
                 .collect(Collectors.toList());
 
         rs.setResult(listUser);
@@ -153,8 +171,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public User getOrCreateGoogleUser(String email, Map<String, Object> userInfo) {
+    public User getOrCreateUser(String email, Map<String, Object> userInfo) {
         try {
             User user = handleGetUserByEmail(email);
             if (user != null) {
@@ -171,7 +188,7 @@ public class UserServiceImpl implements IUserService {
             );
 
             newUser.setGender(genderEnumMap.get(userInfo.get("gender").toString()));
-            newUser.setPassword("googleLoginDefaultPassword");
+            newUser.setPassword("socialLoginDefaultPassword");
             newUser.setCreatedAt(Instant.now());
             newUser.setCreatedBy(email);
 

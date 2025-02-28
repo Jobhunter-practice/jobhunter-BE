@@ -33,5 +33,5 @@ public interface IUserService {
 
     public User handleUpdateUser(User user);
 
-    public User getOrCreateGoogleUser(String email, Map<String, Object> userInfo);
+    public User getOrCreateUser(String email, Map<String, Object> userInfo);
 }

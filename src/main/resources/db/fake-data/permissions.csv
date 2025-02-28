@@ -34,6 +34,6 @@ id,name,api_path,method,module,created_at,updated_at,created_by,updated_by
 33,Delete a subscriber,/api/v1/subscribers/{id},DELETE,SUBSCRIBERS,2025-02-21 02:38:57,,"",
 34,Get a subscriber by id,/api/v1/subscribers/{id},GET,SUBSCRIBERS,2025-02-21 02:38:57,,"",
 35,Get subscribers with pagination,/api/v1/subscribers,GET,SUBSCRIBERS,2025-02-21 02:38:57,,"",
-36,Download a file,/api/v1/files,POST,FILES,2025-02-21 02:38:57,,"",
-37,Upload a file,/api/v1/files,GET,FILES,2025-02-21 02:38:57,,"",
+36,Download a file,/api/v1/files,GET,FILES,2025-02-21 02:38:57,,"",
+37,Upload a file,/api/v1/files,POST,FILES,2025-02-21 02:38:57,,"",
 38,Send mail,/api/v1/email,GET,EMAILS,2025-02-21 02:38:57,,"",

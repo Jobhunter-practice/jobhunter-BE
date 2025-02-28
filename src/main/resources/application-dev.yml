@@ -4,9 +4,9 @@ server:
 spring:
   # Database configuration
   datasource:
-    url: jdbc:mysql://localhost:3306/jobhunter_dev
-    username: root
-    password: 1234
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 10
@@ -19,9 +19,13 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect-uri: http://localhost:3000/login/google/callback
+            redirect-uri: ${GOOGLE_REDIRECT_URI}
             scope:
               - https://www.googleapis.com/auth/userinfo.profile
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            redirect-uri: ${GITHUB_REDIRECT_URI}
         provider:
           google:
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
@@ -40,7 +44,7 @@ spring:
     database: MYSQL
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
     properties:
       hibernate:
         format_sql: true
@@ -67,13 +71,13 @@ spring:
 # JWT Configuration
 jobhunter:
   jwt:
-    base64-secret: TRrx3ZoD9xgevlM73MU8/ay9VO+8RJ7NjvFh5Ab0xoTsKzuPYwCOKDZugGYsVxroYRfP94DH6jBxBhFyBPaQQQ==
+    base64-secret: ${JWT_SECRET_KEY}
     access-token-validity-in-seconds: 8640000  # 100 days
     refresh-token-validity-in-seconds: 8640000  # 100 days
 
   # File upload base path
   upload-file:
-    base-uri: file:///S:/Java/JavaSP/job%20hunter/upload/
+    base-uri: ${MY_UPLOADFILE_STORAGE}
 
 #enable swagger
 springdoc:

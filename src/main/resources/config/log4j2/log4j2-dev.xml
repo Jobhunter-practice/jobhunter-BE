@@ -27,7 +27,7 @@
             <AppenderRef ref="Console" />
         </Root>
 
-        <Logger name="com.mycompany.jobhunter" level="DEBUG" additivity="false">
+        <Logger name="jobhunter" level="DEBUG" additivity="false">
             <AppenderRef ref="ApplicationLog" />
             <AppenderRef ref="Console" />
         </Logger>

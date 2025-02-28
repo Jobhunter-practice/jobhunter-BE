@@ -41,7 +41,6 @@ public class SecurityConfiguration {
                 "/",
                 "/api/v1/auth", "/api/v1/auth/**", "/api/v1/auth/social-login", "/api/v1/auth/social-login/callback",
                 "/storage/**",
-                "/api/v1/email/**",
                 "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
         };
 
@@ -55,6 +54,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/auth/social-login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/jobs/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/skills/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/email").hasAnyRole("SUPER_ADMIN")
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2
                         .jwt(Customizer.withDefaults())
@@ -68,7 +68,7 @@ public class SecurityConfiguration {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        grantedAuthoritiesConverter.setAuthorityPrefix("");
+        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
         grantedAuthoritiesConverter.setAuthoritiesClaimName("permission");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();

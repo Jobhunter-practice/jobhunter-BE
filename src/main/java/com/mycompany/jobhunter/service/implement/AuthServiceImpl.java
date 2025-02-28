@@ -1,28 +1,17 @@
 package com.mycompany.jobhunter.service.implement;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.auth.oauth2.TokenResponse;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
 import com.mycompany.jobhunter.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
-public class AuthService implements com.mycompany.jobhunter.service.contract.IAuthService {
+public class AuthServiceImpl implements com.mycompany.jobhunter.service.contract.IAuthService {
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String googleClientId;
@@ -50,7 +39,7 @@ public class AuthService implements com.mycompany.jobhunter.service.contract.IAu
 
     private AuthUtil authUtil;
 
-    public AuthService(AuthUtil authUtil) {
+    public AuthServiceImpl(AuthUtil authUtil) {
         this.authUtil = authUtil;
     }
 

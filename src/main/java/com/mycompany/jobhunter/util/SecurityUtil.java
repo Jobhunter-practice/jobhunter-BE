@@ -2,6 +2,10 @@ package com.mycompany.jobhunter.util;
 
 import com.mycompany.jobhunter.domain.dto.response.ResLoginDTO;
 
+import com.mycompany.jobhunter.domain.entity.Role;
+import com.mycompany.jobhunter.domain.entity.User;
+import com.mycompany.jobhunter.service.contract.IUserService;
+import com.mycompany.jobhunter.service.implement.UserServiceImpl;
 import com.nimbusds.jose.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -16,9 +20,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SecurityUtil {
@@ -33,10 +35,12 @@ public class SecurityUtil {
     @Value("${jobhunter.jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenExpiration;
 
+    private final IUserService userService;
     private final JwtEncoder jwtEncoder;
 
-    public SecurityUtil(JwtEncoder jwtEncoder) {
+    public SecurityUtil(JwtEncoder jwtEncoder, IUserService userService) {
         this.jwtEncoder = jwtEncoder;
+        this.userService = userService;
     }
 
     public String createAccessToken(Long id, String username, String email) {
@@ -45,10 +49,9 @@ public class SecurityUtil {
         userLogin.setName(username);
         userLogin.setEmail(email);
 
-        List<String> authorities = new ArrayList<>();
-        // TODO: fix hard code for user's permission
-        authorities.add("ROLE_USER_CREATE");
-        authorities.add("ROLE_USER_UPDATE");
+        User userDB = this.userService.handleGetUserByEmail(email);
+        Role userRole = userDB.getRole();
+        String authorities = userRole.getName();
 
         Instant now = Instant.now();
         Instant expiresAt = now.plus(this.accessTokenExpiration, ChronoUnit.SECONDS);

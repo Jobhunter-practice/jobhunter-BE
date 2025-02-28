@@ -77,7 +77,8 @@ public class GlobalException {
 
     @ExceptionHandler(value = {
             MethodArgumentNotValidException.class,
-            BadRequestException.class
+            BadRequestException.class,
+            RuntimeException.class
     })
     public ResponseEntity<RestResponse<Object>> validationError(Exception ex) {
         RestResponse<Object> res = new RestResponse<Object>();

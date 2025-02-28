@@ -5,5 +5,6 @@ import java.util.Map;
 
 public interface IAuthService {
     String generateGoogleAuthUrl();
+    String generateGithubAuthUrl();
     Map<String, Object> authenticateAndFetchProfile(String provider, String code) throws IOException;
 }

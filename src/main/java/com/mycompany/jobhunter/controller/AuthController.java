@@ -5,7 +5,6 @@ import com.mycompany.jobhunter.domain.dto.request.ReqLoginDTO;
 import com.mycompany.jobhunter.domain.dto.response.ResLoginDTO;
 import com.mycompany.jobhunter.domain.dto.response.user.ResCreateUserDTO;
 import com.mycompany.jobhunter.domain.entity.User;
-import com.mycompany.jobhunter.domain.entity.enumeration.GenderEnum;
 import com.mycompany.jobhunter.service.contract.IAuthService;
 import com.mycompany.jobhunter.service.contract.IUserService;
 import com.mycompany.jobhunter.util.SecurityUtil;
@@ -13,8 +12,6 @@ import com.mycompany.jobhunter.util.annotation.ApiMessage;
 import com.mycompany.jobhunter.util.error.DuplicatedKeyException;
 import com.mycompany.jobhunter.util.error.MissingCookiesException;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +30,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -67,10 +63,15 @@ public class AuthController {
     @ApiMessage("Login via social")
     public ResponseEntity<Optional<String>> socialLogin(@RequestParam String provider){
         logger.info("Get auth url for social login");
-        if ("google".equalsIgnoreCase(provider.trim().toLowerCase())) {
-            String googleAuthUrl = authService.generateGoogleAuthUrl();
-            return ResponseEntity.ok(Optional.of(googleAuthUrl));
+        switch (provider.trim().toLowerCase()){
+            case "google":
+                String googleAuthUrl = authService.generateGoogleAuthUrl();
+                return ResponseEntity.ok(Optional.of(googleAuthUrl));
+            case "github":
+                String githubAuthUrl = authService.generateGithubAuthUrl();
+                return ResponseEntity.ok(Optional.of(githubAuthUrl));
         }
+
         return ResponseEntity.badRequest().body(Optional.of("Invalid provider"));
     }
 
@@ -79,27 +80,12 @@ public class AuthController {
     public ResponseEntity<ResLoginDTO> socialLogin(
             @RequestParam String provider,
             @RequestParam String code
-    ) throws IOException, BadRequestException {
+    ) throws IOException {
         logger.info("Exchange code for token");
         Map<String, Object> userInfo = authService.authenticateAndFetchProfile(provider, code);
 
-        User currentUserDB = null;
-        switch (provider.trim().toLowerCase()) {
-            case "google":
-                String email = userInfo.get("email").toString();
-
-                try {
-                    currentUserDB = userService.getOrCreateGoogleUser(email, userInfo);
-                } catch (Exception e) {
-                    logger.error("Error during user creation", e);
-                    throw new BadRequestException("Error processing request");
-                }
-                break;
-            default:
-                throw new BadRequestException("Invalid provider");
-        }
-
-        ResLoginDTO result = new ResLoginDTO();
+        String email = userInfo.get("email").toString();
+        User currentUserDB = userService.getOrCreateUser(email, userInfo);
 
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                 currentUserDB.getId(),
@@ -108,6 +94,7 @@ public class AuthController {
                 currentUserDB.getRole()
         );
 
+        ResLoginDTO result = new ResLoginDTO();
         result.setUser(userLogin);
 
         // create access_token
@@ -183,7 +170,6 @@ public class AuthController {
                 currentUserDB.getName(),
                 currentUserDB.getEmail()
         );
-        result.setAccessToken(refreshToken);
         // update user's refresh token
         this.userService.updateRefreshToken(refreshToken, currentUserDB.getEmail());
 
